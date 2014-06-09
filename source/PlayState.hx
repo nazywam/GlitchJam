@@ -23,6 +23,7 @@ class PlayState extends FlxState
 	var background : FlxTilemap;
 	var coins : FlxGroup;
 	var lasers : FlxGroup;
+	var levers : FlxGroup;
 	
 	var player : Player;
 	var playerSpawn : Point;
@@ -32,7 +33,7 @@ class PlayState extends FlxState
 	
 	override public function create() {
 		super.create();
-		FlxG.worldBounds.set(800, 320);
+		FlxG.worldBounds.set(640, 320);
 		FlxG.log.redirectTraces = true;
 		FlxG.mouse.visible = false;
 		background = new FlxTilemap();
@@ -49,7 +50,12 @@ class PlayState extends FlxState
 		lasers = new FlxGroup();
 		add(lasers);
 		
-		placeStuff(Assets.getText("assets/data/stuff.tmx"));
+		levers = new FlxGroup();
+		add(levers);
+		
+		parseMap(Assets.getText("assets/data/map.txt"));
+		
+		//placeStuff(Assets.getText("assets/data/stuff.tmx"));
 		
 		catGlitch = new FlxGlitchSprite(cat);
 		add(catGlitch);
@@ -57,6 +63,8 @@ class PlayState extends FlxState
 		
 		FlxG.camera.setBounds(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
 		FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER);
+		
+		
 	}
 	
 	public function collectCoin(player : Player, coin : Coin) {
@@ -91,7 +99,13 @@ class PlayState extends FlxState
 		player.acceleration.y = 0;
 		player.velocity.y = 0;
 		player.solid = false;
+		player.facingRight = true;
 		new FlxTimer(2, function(Timer:FlxTimer) {player.animation.play("restart");}, 1);
+	}
+	public function nearLever(player : Player, lever : Lever) {
+		if (FlxG.keys.justPressed.SPACE) {
+			lever.state = !lever.state;	
+		}
 	}
 	
 	override public function update() {
@@ -112,11 +126,12 @@ class PlayState extends FlxState
 			cat.visible = true;
 		}
 		
-		background.scrollFactor.x = FlxG.camera.scroll.x/background.width*1.2;
+		background.scrollFactor.x = FlxG.camera.scroll.x/background.width*0.9;
 		FlxG.collide(player, map);
 		FlxG.overlap(player, coins, collectCoin);
 		FlxG.collide(player, cat, collectCat);
 		FlxG.overlap(player, lasers, killPlayer);
+		FlxG.overlap(player, levers, nearLever);
 		
 		if (FlxG.keys.justPressed.SPACE && player.dead) {
 			spawnPlayer();
@@ -140,27 +155,44 @@ class PlayState extends FlxState
 			player.animation.frameIndex = 2;
 		}
 	}
-	function placeStuff(Stuff:String) {
-		var ids:Array<String>;
-		var entities:Array<String> = Stuff.split("\n");   
-		for (posY in 0...(entities.length)) {
-			ids = entities[posY].split(",");  
-			for (posX in 0...(ids.length)) {
-				if (Std.parseInt(ids[posX]) == 40) {
-					coins.add(new Coin(16*posX, 16*posY));
-				}
-				if (Std.parseInt(ids[posX]) == 39) {
-					cat = new Cat(16 * posX, 16 * posY);
-					add(cat);
-				}
-				if (Std.parseInt(ids[posX]) == 38) {
-					playerSpawn = new Point(16 * posX, 16 * posY);
+	function parseMap(map:String) {
+		var items = map.split("[]");
+		parseTiles(items[0]);
+		for (x in 1...items.length) {
+			//trace(x + " " + items[x]);
+			var ids = items[x].substring(2, items[x].length - 3).split("\n");
+			
+			var entry = ids[0].split("=");
+			var pos4 = ids[1].split("=")[1].substring(0, ids[1].split("=")[1].length - 3);
+			var pos2 = pos4.split(",");
+			
+			var posX = Std.parseInt(pos2[0]);
+			var posY = Std.parseInt(pos2[1]) -1;
+			var type = entry[1].substring(0, entry[1].length - 1);
+			//trace (entry[0] + "X" + entry[1]);
+			//trace( + " " + posX + " " + posY);
+			switch(type) {
+				case "Coin":
+					coins.add(new Coin(posX*16, posY*16));
+				case "Lever":
+					var opens = ids[2].split("=")[1].substr(0, ids[2].split("=")[1].length-1);
+					levers.add(new Lever(posX * 16, posY * 16, Std.parseInt(opens)));
+				case "Laser":
+					var ID = ids[2].split("=")[1].substr(0, ids[2].split("=")[1].length - 1);
+					trace(ID);
+					var vertical = ids[3].split("=")[1].substr(0, ids[3].split("=")[1].length - 1);
+					trace(vertical);
+					lasers.add(new Laser(posX * 16, posY * 16, Std.parseInt(vertical)==0, Std.parseInt(ID)));
+				case "Player":
+					playerSpawn = new Point(posX * 16, posY * 16);
 					spawnPlayer();
-				}
-				if (Std.parseInt(ids[posX]) == 41 || Std.parseInt(ids[posX]) == 49) {
-					lasers.add(new Laser(16 * posX, 16 * posY, Std.parseInt(ids[posX]) == 41));
-				}
+				case "Cat":
+					cat = new Cat(posX * 16, posY * 16);
+					add(cat);
 			}
 		}
+	}
+	function parseTiles(tiles:String) {
+		
 	}
 }

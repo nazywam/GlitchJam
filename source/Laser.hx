@@ -9,9 +9,11 @@ import openfl.Assets;
 class Laser extends FlxSprite {
 	//can blink
 	var vertical : Bool;
-	public function new(X:Float, Y:Float, v:Bool){
+	public var id : Int; // could use ID ?
+	public function new(X:Float, Y:Float, v:Bool, i:Int){
 		super(X, Y);
-		this.vertical = v;
+		vertical = v;
+		id = i;
 		solid = true;
 		immovable = true;
 		loadGraphic(Assets.getBitmapData("assets/images/tiles.png"), true, 16, 16);

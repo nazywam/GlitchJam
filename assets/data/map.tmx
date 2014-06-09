@@ -1,54 +1,360 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="50" height="20" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" width="40" height="20" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="../images/tiles.png" width="128" height="240"/>
+  <tile id="32">
+   <properties>
+    <property name="Type" value="Lever"/>
+   </properties>
+  </tile>
+  <tile id="39">
+   <properties>
+    <property name="Type" value="Coin"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="ID" value="0"/>
+   </properties>
+  </tile>
  </tileset>
- <layer name="Tiles" width="50" height="20">
+ <layer name="Tiles" width="40" height="20">
   <data encoding="csv">
-5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,13,
-13,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,9,27,0,28,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,5,1,2,2,2,2,2,2,2,27,0,0,28,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,13,
-13,1,2,3,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,17,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,13,
-21,0,0,0,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,21,
-9,1,2,2,2,2,2,3,9,1,2,2,2,2,2,2,2,2,2,2,3,25,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,9
+5,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,28,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,13,
+13,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,3,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,26,0,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,9,27,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,10,10,10,11,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,0,0,0,5,1,2,2,2,2,2,2,2,27,0,0,1,2,2,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,13,
+13,1,2,3,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,17,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,27,0,13,
+13,0,0,0,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+21,0,0,0,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,21,
+9,1,2,2,2,2,2,3,9,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,9
 </data>
  </layer>
- <layer name="Stuff" width="50" height="20">
-  <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,38,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,41,41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-</data>
- </layer>
+ <objectgroup name="" width="40" height="20">
+  <object type="Lever" gid="33" x="272" y="240">
+   <properties>
+    <property name="ID" value="2"/>
+   </properties>
+  </object>
+  <object type="Lever" gid="33" x="208" y="176">
+   <properties>
+    <property name="ID" value="1"/>
+   </properties>
+  </object>
+  <object type="Lever" gid="33" x="560" y="176">
+   <properties>
+    <property name="ID" value="4"/>
+   </properties>
+  </object>
+  <object type="Lever" gid="33" x="592" y="256">
+   <properties>
+    <property name="ID" value="5"/>
+   </properties>
+  </object>
+  <object type="Lever" gid="33" x="320" y="304">
+   <properties>
+    <property name="ID" value="3"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="288" y="256">
+   <properties>
+    <property name="ID" value="1"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="304" y="256">
+   <properties>
+    <property name="ID" value="1"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="32" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="608" y="272">
+   <properties>
+    <property name="ID" value="3"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="49" x="576" y="160">
+   <properties>
+    <property name="ID" value="4"/>
+    <property name="V" value="1"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="49" x="576" y="144">
+   <properties>
+    <property name="ID" value="4"/>
+    <property name="V" value="1"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="49" x="576" y="128">
+   <properties>
+    <property name="ID" value="4"/>
+    <property name="V" value="1"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="49" x="576" y="112">
+   <properties>
+    <property name="ID" value="4"/>
+    <property name="V" value="1"/>
+   </properties>
+  </object>
+  <object type="Coin" gid="40" x="112" y="112"/>
+  <object type="Coin" gid="40" x="16" y="160"/>
+  <object type="Coin" gid="40" x="112" y="208"/>
+  <object type="Coin" gid="40" x="16" y="256"/>
+  <object type="Coin" gid="40" x="320" y="144"/>
+  <object type="Coin" gid="40" x="400" y="112"/>
+  <object type="Coin" gid="40" x="464" y="80"/>
+  <object type="Coin" gid="40" x="512" y="64"/>
+  <object type="Coin" gid="40" x="560" y="48"/>
+  <object type="Coin" gid="40" x="608" y="112"/>
+  <object type="Laser" gid="49" x="336" y="288">
+   <properties>
+    <property name="ID" value="5"/>
+    <property name="V" value="1"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="49" x="336" y="304">
+   <properties>
+    <property name="ID" value="5"/>
+    <property name="V" value="1"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="224" y="192">
+   <properties>
+    <property name="ID" value="2"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Cat" gid="39" x="32" y="64"/>
+  <object type="Player" gid="38" x="224" y="224"/>
+  <object type="Laser" gid="41" x="48" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="64" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="80" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="96" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="144" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="112" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="128" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="160" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="208" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="224" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="176" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="240" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="256" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="272" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="192" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="448" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="496" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="464" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="528" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="512" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="416" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="288" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="336" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="352" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="432" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="304" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="368" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="480" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="384" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="400" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="320" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="560" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="576" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="544" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="592" y="16">
+   <properties>
+    <property name="ID" value="6"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>
