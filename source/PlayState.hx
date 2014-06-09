@@ -1,7 +1,9 @@
 package ;
 
+import flash.geom.Point;
 import flash.Lib;
 import flixel.addons.effects.FlxGlitchSprite;
+import flixel.effects.FlxFlicker;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -20,8 +22,10 @@ class PlayState extends FlxState
 	var map : FlxTilemap;
 	var background : FlxTilemap;
 	var coins : FlxGroup;
+	var lasers : FlxGroup;
 	
 	var player : Player;
+	var playerSpawn : Point;
 	
 	var cat : Cat;
 	var catGlitch : FlxGlitchSprite;
@@ -41,6 +45,9 @@ class PlayState extends FlxState
 		
 		coins = new FlxGroup();
 		add(coins);
+		
+		lasers = new FlxGroup();
+		add(lasers);
 		
 		placeStuff(Assets.getText("assets/data/stuff.tmx"));
 		
@@ -70,6 +77,21 @@ class PlayState extends FlxState
 		catGlitch.exists = false;
 		new FlxTimer(1.5, nextLevel, 1);
 	}
+	public function spawnPlayer() {
+		if(player!=null)remove(player);
+		player = new Player(playerSpawn);
+		add(player);
+		FlxFlicker.flicker(player, 1, 0.1);
+	}
+	public function killPlayer(player : Player, laser : Laser) {
+		if (FlxFlicker.isFlickering(player)) return;
+		player.animation.play("die");
+		player.dead = true;
+		player.acceleration.y = 0;
+		player.velocity.y = 0;
+		player.solid = false;
+		new FlxTimer(2, function(Timer:FlxTimer) {player.animation.play("restart");}, 1);
+	}
 	
 	override public function update() {
 		super.update();
@@ -87,12 +109,19 @@ class PlayState extends FlxState
 		
 		background.scrollFactor.x = FlxG.camera.scroll.x/background.width*1.2;
 		FlxG.collide(player, map);
-		FlxG.collide(player, coins, collectCoin);
+		FlxG.overlap(player, coins, collectCoin);
 		FlxG.collide(player, cat, collectCat);
-		if (cat.touched) return ;
+		FlxG.overlap(player, lasers, killPlayer);
+		
+		if (FlxG.keys.justPressed.SPACE && player.dead) {
+			spawnPlayer();
+		}
+		
+		if (cat.touched || player.dead) return;
+		
 		if (FlxG.keys.pressed.RIGHT) {
-			player.facingRight = true;
 			player.velocity.x = 150;
+			player.facingRight = true;
 		} else if (FlxG.keys.pressed.LEFT) {
 			player.velocity.x = -150;
 			player.facingRight = false;
@@ -120,8 +149,11 @@ class PlayState extends FlxState
 					add(cat);
 				}
 				if (Std.parseInt(ids[posX]) == 38) {
-					player = new Player(16 * posX, 16 * posY);
-					add(player);
+					playerSpawn = new Point(16 * posX, 16 * posY);
+					spawnPlayer();
+				}
+				if (Std.parseInt(ids[posX]) == 41 || Std.parseInt(ids[posX]) == 49) {
+					lasers.add(new Laser(16 * posX, 16 * posY, Std.parseInt(ids[posX]) == 41));
 				}
 			}
 		}
