@@ -35,5 +35,8 @@ class MenuState extends FlxState
 	override public function update():Void
 	{
 		super.update();
+		//if (FlxG.mouse.justPressed) {
+			FlxG.switchState(new PlayState());
+		//}
 	}
 }
