@@ -34,7 +34,7 @@ class PlayState extends FlxState
 		super.create();
 		FlxG.worldBounds.set(800, 320);
 		FlxG.log.redirectTraces = true;
-		
+		FlxG.mouse.visible = false;
 		background = new FlxTilemap();
 		background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 0, 1);
 		add(background);
@@ -81,6 +81,7 @@ class PlayState extends FlxState
 		if(player!=null)remove(player);
 		player = new Player(playerSpawn);
 		add(player);
+		FlxG.camera.follow(player);
 		FlxFlicker.flicker(player, 1, 0.1);
 	}
 	public function killPlayer(player : Player, laser : Laser) {
@@ -97,6 +98,8 @@ class PlayState extends FlxState
 		super.update();
 		var distance = FlxMath.distanceBetween(cat, player);
 		if (distance < 100 && !cat.touched && catGlitch.exists) {
+			cat.visible = false;
+			catGlitch.visible = true;
 			var strength = Std.int(Math.max(10 - distance / 20, 0));
 			if (distance < 50) {
 				strength *= 5;
@@ -104,7 +107,9 @@ class PlayState extends FlxState
 			catGlitch.strength = strength;
 			FlxG.camera.shake(0.001*strength, 0.1);
 		} else {
-			catGlitch.strength = 0;
+			//catGlitch.strength = 0;
+			catGlitch.visible = false;
+			cat.visible = true;
 		}
 		
 		background.scrollFactor.x = FlxG.camera.scroll.x/background.width*1.2;

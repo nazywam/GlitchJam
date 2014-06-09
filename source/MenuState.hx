@@ -18,6 +18,10 @@ class MenuState extends FlxState
 	override public function create():Void
 	{
 		super.create();
+		var text = new FlxText(FlxG.camera.width / 2, FlxG.camera.height / 2, 0, "Use arrows to run and jump\n	  click to continue", 16);
+		text.x -= text.width / 2;
+		add(text);
+		
 	}
 
 	/**
@@ -35,8 +39,8 @@ class MenuState extends FlxState
 	override public function update():Void
 	{
 		super.update();
-		//if (FlxG.mouse.justPressed) {
+		if (FlxG.mouse.justPressed) {
 			FlxG.switchState(new PlayState());
-		//}
+		}
 	}
 }
