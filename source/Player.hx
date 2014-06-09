@@ -1,6 +1,7 @@
 package ;
 import openfl.Assets;
 import flixel.FlxObject;
+import flixel.FlxG;
 /**
  * ...
  * @author Michael
@@ -23,7 +24,7 @@ class Player extends Actor {
 		offset.y = 4;
 	}
 	override public function update() {
-		
+		//FlxG.watch.add(velocity, "y", "y:");
 		flipX = !facingRight;
 		if (isTouching(FlxObject.FLOOR)) {
 			if (Math.abs(velocity.x ) > 10) {
@@ -36,6 +37,7 @@ class Player extends Actor {
 			animation.play("jump");
 		}
 		super.update();
+		
 	}
 	
 }
