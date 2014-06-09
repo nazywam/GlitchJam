@@ -25,7 +25,6 @@ class Player extends Actor {
 	override public function update() {
 		
 		flipX = !facingRight;
-		trace(velocity.y);
 		if (isTouching(FlxObject.FLOOR)) {
 			if (Math.abs(velocity.x ) > 10) {
 				animation.play("run");
