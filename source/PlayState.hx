@@ -11,6 +11,7 @@ import flixel.ui.FlxButton;
 import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
 import flixel.util.FlxMath;
+import flixel.util.FlxTimer;
 import openfl.Assets;
 import flixel.FlxCamera;
 class PlayState extends FlxState
@@ -24,6 +25,7 @@ class PlayState extends FlxState
 	
 	var cat : Cat;
 	var catGlitch : FlxGlitchSprite;
+	
 	override public function create() {
 		super.create();
 		FlxG.worldBounds.set(800, 320);
@@ -54,14 +56,31 @@ class PlayState extends FlxState
 		coin.animation.play("take");
 		coin.solid = false;
 	}
+	public function nextLevel(Timer:FlxTimer) {
+		//trace("meow");
+		FlxG.camera.flash(0xFFFFFF, 0.3);
+		cat.visible = false;
+		Timer.destroy();
+		cat.touched = false;
+		cat.exists = false;
+	}
 	public function collectCat(player : Player, cat : Cat) {
-		
+		cat.visible = true;
+		cat.touched = true;
+		catGlitch.exists = false;
+		new FlxTimer(1.5, nextLevel, 1);
 	}
 	
 	override public function update() {
 		super.update();
-		if (FlxMath.distanceBetween(cat, player) < 100) {
-			catGlitch.strength = Std.int(Math.max(10 - FlxMath.distanceBetween(cat, player) / 20, 0));
+		var distance = FlxMath.distanceBetween(cat, player);
+		if (distance < 100 && !cat.touched && catGlitch.exists) {
+			var strength = Std.int(Math.max(10 - distance / 20, 0));
+			if (distance < 50) {
+				strength *= 5;
+			}
+			catGlitch.strength = strength;
+			FlxG.camera.shake(0.001*strength, 0.1);
 		} else {
 			catGlitch.strength = 0;
 		}
@@ -70,6 +89,7 @@ class PlayState extends FlxState
 		FlxG.collide(player, map);
 		FlxG.collide(player, coins, collectCoin);
 		FlxG.collide(player, cat, collectCat);
+		if (cat.touched) return ;
 		if (FlxG.keys.pressed.RIGHT) {
 			player.facingRight = true;
 			player.velocity.x = 150;
