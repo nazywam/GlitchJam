@@ -9,14 +9,17 @@ import openfl.Assets;
 class Laser extends FlxSprite {
 	//can blink
 	var vertical : Bool;
-	public var id : Int; // could use ID ?
+	public var on : Bool;
+	
 	public function new(X:Float, Y:Float, v:Bool, i:Int){
 		super(X, Y);
+		on = true;
 		vertical = v;
-		id = i;
+		ID = i;
 		solid = true;
 		immovable = true;
 		loadGraphic(Assets.getBitmapData("assets/images/tiles.png"), true, 16, 16);
+		animation.add("off", [3], 1, false);
 		if (vertical) {
 			animation.add("default", [40, 41, 42, 43, 44, 45, 46, 47], 10);
 		} else {
@@ -29,8 +32,14 @@ class Laser extends FlxSprite {
 		width = 2;
 		x += 7;
 		offset.x = 7;
-		
-		animation.play("default");
+	}
+	override public function update() {
+		super.update();
+		if (on) {
+			animation.play("default");
+		} else {
+			animation.play("off");
+		}
 	}
 	
 }

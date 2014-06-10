@@ -24,6 +24,7 @@ class PlayState extends FlxState
 	var coins : FlxGroup;
 	var lasers : FlxGroup;
 	var levers : FlxGroup;
+	var signs : FlxGroup;
 	
 	var player : Player;
 	var playerSpawn : Point;
@@ -52,6 +53,9 @@ class PlayState extends FlxState
 		
 		levers = new FlxGroup();
 		add(levers);
+		
+		signs = new FlxGroup();
+		add(signs);
 		
 		parseMap(Assets.getText("assets/data/map.txt"));
 		
@@ -93,7 +97,7 @@ class PlayState extends FlxState
 		FlxFlicker.flicker(player, 1, 0.1);
 	}
 	public function killPlayer(player : Player, laser : Laser) {
-		if (FlxFlicker.isFlickering(player)) return;
+		if (FlxFlicker.isFlickering(player) || !laser.on) return;
 		player.animation.play("die");
 		player.dead = true;
 		player.acceleration.y = 0;
@@ -105,6 +109,9 @@ class PlayState extends FlxState
 	public function nearLever(player : Player, lever : Lever) {
 		if (FlxG.keys.justPressed.SPACE) {
 			lever.state = !lever.state;	
+			for (l in lasers) {
+				if (l.ID == lever.opens) cast(l, Laser).on = !cast(l, Laser).on;
+			}
 		}
 	}
 	
@@ -140,10 +147,10 @@ class PlayState extends FlxState
 		if (cat.touched || player.dead) return;
 		
 		if (FlxG.keys.pressed.RIGHT) {
-			player.velocity.x = 150;
+			player.velocity.x = 125;
 			player.facingRight = true;
 		} else if (FlxG.keys.pressed.LEFT) {
-			player.velocity.x = -150;
+			player.velocity.x = -125;
 			player.facingRight = false;
 		}
 		
@@ -179,9 +186,9 @@ class PlayState extends FlxState
 					levers.add(new Lever(posX * 16, posY * 16, Std.parseInt(opens)));
 				case "Laser":
 					var ID = ids[2].split("=")[1].substr(0, ids[2].split("=")[1].length - 1);
-					trace(ID);
+					//trace(ID);
 					var vertical = ids[3].split("=")[1].substr(0, ids[3].split("=")[1].length - 1);
-					trace(vertical);
+					//trace(vertical);
 					lasers.add(new Laser(posX * 16, posY * 16, Std.parseInt(vertical)==0, Std.parseInt(ID)));
 				case "Player":
 					playerSpawn = new Point(posX * 16, posY * 16);
@@ -189,6 +196,10 @@ class PlayState extends FlxState
 				case "Cat":
 					cat = new Cat(posX * 16, posY * 16);
 					add(cat);
+				case "Sign":
+					var text = ids[2].split("=")[1].substr(0, ids[2].split("=")[1].length - 1);
+					trace(text);
+					signs.add(new Sign(posX * 16, posY * 16, text));
 			}
 		}
 	}
