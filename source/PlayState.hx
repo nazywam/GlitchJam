@@ -13,6 +13,7 @@ import flixel.ui.FlxButton;
 import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
 import flixel.util.FlxMath;
+import flixel.util.FlxPoint;
 import flixel.util.FlxTimer;
 import openfl.Assets;
 import flixel.FlxCamera;
@@ -32,7 +33,12 @@ class PlayState extends FlxState
 	var cat : Cat;
 	var catGlitch : FlxGlitchSprite;
 	
-	override public function create() {
+	var start : Doors;
+	var end : Doors;
+	
+	var levelEnded : Bool;
+	
+	override public function create() { //should use different classes for each level?
 		super.create();
 		FlxG.worldBounds.set(640, 320);
 		FlxG.log.redirectTraces = true;
@@ -41,9 +47,7 @@ class PlayState extends FlxState
 		background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 0, 1);
 		add(background);
 		
-		map = new FlxTilemap();
-		map.loadMap(Assets.getText("assets/data/map.tmx"), "assets/images/tiles.png", 16, 16, 0, 1);
-		add(map);
+		levelEnded = false;
 		
 		coins = new FlxGroup();
 		add(coins);
@@ -58,40 +62,49 @@ class PlayState extends FlxState
 		add(signs);
 		
 		parseMap(Assets.getText("assets/data/map.txt"));
-		
-		//placeStuff(Assets.getText("assets/data/stuff.tmx"));
-		
+		spawnPlayer();
+
 		catGlitch = new FlxGlitchSprite(cat);
 		add(catGlitch);
 		cat.visible = false;
 		
 		FlxG.camera.setBounds(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
 		FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER);
-		
-		
 	}
 	
 	public function collectCoin(player : Player, coin : Coin) {
 		coin.animation.play("take");
 		coin.solid = false;
 	}
-	public function nextLevel(Timer:FlxTimer) {
-		//trace("meow");
+	public function nextLevel(player : Player, end : Doors) {
+		if (FlxG.keys.justPressed.UP) {
+			levelEnded = true;
+			var head = new FlxObject(player.x + player.width / 2, player.y + 5, 1, 1);
+			
+			FlxG.camera.follow(head, FlxCamera.STYLE_LOCKON);
+			trace(FlxG.camera.target.x);
+			new FlxTimer(1, function(Timer:FlxTimer){FlxG.switchState(new PlayState());}, 1);
+		}
+	}
+	public function catD(Timer:FlxTimer) {
 		FlxG.camera.flash(0xFFFFFF, 0.3);
 		cat.visible = false;
 		Timer.destroy();
 		cat.touched = false;
 		cat.exists = false;
+		end.animation.play("open");
 	}
 	public function collectCat(player : Player, cat : Cat) {
 		cat.visible = true;
 		cat.touched = true;
+		cat.solid = false;
 		catGlitch.exists = false;
-		new FlxTimer(1.5, nextLevel, 1);
+		new FlxTimer(1.5, catD, 1);
 	}
 	public function spawnPlayer() {
 		if(player!=null)remove(player);
 		player = new Player(playerSpawn);
+		start.animation.play("close");
 		add(player);
 		FlxG.camera.follow(player);
 		FlxFlicker.flicker(player, 1, 0.1);
@@ -104,13 +117,16 @@ class PlayState extends FlxState
 		player.velocity.y = 0;
 		player.solid = false;
 		player.facingRight = true;
+		if (!laser.vertical) player.y -= 5;
 		new FlxTimer(2, function(Timer:FlxTimer) {player.animation.play("restart");}, 1);
 	}
 	public function nearLever(player : Player, lever : Lever) {
 		if (FlxG.keys.justPressed.UP) {
 			lever.state = !lever.state;	
-			for (l in lasers) {
-				if (l.ID == lever.opens) cast(l, Laser).on = !cast(l, Laser).on;
+			for (l in lasers) { //runs twice? TODO
+				if (cast(l, Laser).id == lever.opens) {
+					cast(l, Laser).on = !cast(l, Laser).on;
+				}
 			}
 		}
 	}
@@ -145,6 +161,7 @@ class PlayState extends FlxState
 		FlxG.overlap(player, lasers, killPlayer);
 		FlxG.overlap(player, levers, nearLever);
 		FlxG.overlap(player, signs, showSign);
+		FlxG.overlap(player, end, nextLevel);
 		
 		for (s in signs) {
 			if (!FlxG.overlap(player, s) && cast(s, Sign).visible) {
@@ -155,8 +172,8 @@ class PlayState extends FlxState
 		if (FlxG.keys.justPressed.SPACE && player.dead) {
 			spawnPlayer();
 		}
-		
-		if (cat.touched || player.dead) return;
+		if (levelEnded) FlxG.camera.zoom += 0.2;
+		if (cat.touched || player.dead || levelEnded) return;
 		
 		if (FlxG.keys.pressed.RIGHT) {
 			player.velocity.x = 125;
@@ -176,7 +193,7 @@ class PlayState extends FlxState
 	}
 	function parseMap(map:String) {
 		var items = map.split("[]");
-		parseTiles(items[0]);
+		parseTiles(items[0].split("data=")[1]);
 		for (x in 1...items.length) {
 			//trace(x + " " + items[x]);
 			var ids = items[x].substring(2, items[x].length - 3).split("\n");
@@ -198,13 +215,17 @@ class PlayState extends FlxState
 					levers.add(new Lever(posX * 16, posY * 16, Std.parseInt(opens)));
 				case "Laser":
 					var ID = ids[2].split("=")[1].substr(0, ids[2].split("=")[1].length - 1);
-					//trace(ID);
 					var vertical = ids[3].split("=")[1].substr(0, ids[3].split("=")[1].length - 1);
-					//trace(vertical);
-					lasers.add(new Laser(posX * 16, posY * 16, Std.parseInt(vertical)==0, Std.parseInt(ID)));
-				case "Player":
-					playerSpawn = new Point(posX * 16, posY * 16);
-					spawnPlayer();
+					var reverted = ids[4].split("=")[1].substr(0, ids[4].split("=")[1].length - 1);
+
+					lasers.add(new Laser(posX * 16, posY * 16, Std.parseInt(vertical) == 1, Std.parseInt(ID), Std.parseInt(reverted) == 1));
+				case "Start":
+					playerSpawn = new Point(posX * 16+8, posY * 16);
+					start = new Doors(posX * 16, posY * 16, true);
+					add(start);
+				case "End":
+					end = new Doors(posX * 16, posY * 16, false);
+					add(end);
 				case "Cat":
 					cat = new Cat(posX * 16, posY * 16);
 					add(cat);
@@ -218,6 +239,8 @@ class PlayState extends FlxState
 		}
 	}
 	function parseTiles(tiles:String) {
-		
+		map = new FlxTilemap();
+		map.loadMap(tiles, "assets/images/tiles.png", 16, 16, 0, 1);
+		add(map);
 	}
 }
