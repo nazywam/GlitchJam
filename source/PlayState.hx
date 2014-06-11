@@ -1,6 +1,7 @@
 package ;
 
 import flash.geom.Point;
+import flash.geom.Rectangle;
 import flash.Lib;
 import flixel.addons.effects.FlxGlitchSprite;
 import flixel.effects.FlxFlicker;
@@ -17,6 +18,7 @@ import flixel.util.FlxPoint;
 import flixel.util.FlxTimer;
 import openfl.Assets;
 import flixel.FlxCamera;
+import flixel.addons.display.FlxZoomCamera;
 class PlayState extends FlxState
 {
 	
@@ -38,6 +40,7 @@ class PlayState extends FlxState
 	
 	var levelEnded : Bool;
 	
+	var cameraColor : Int;
 	override public function create() { //should use different classes for each level?
 		super.create();
 		FlxG.worldBounds.set(640, 320);
@@ -46,6 +49,9 @@ class PlayState extends FlxState
 		background = new FlxTilemap();
 		background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 0, 1);
 		add(background);
+		
+		
+		cameraColor = 0xFFFFFF;
 		
 		levelEnded = false;
 		
@@ -64,6 +70,8 @@ class PlayState extends FlxState
 		parseMap(Assets.getText("assets/data/map.txt"));
 		spawnPlayer();
 
+
+		
 		catGlitch = new FlxGlitchSprite(cat);
 		add(catGlitch);
 		cat.visible = false;
@@ -79,11 +87,15 @@ class PlayState extends FlxState
 	public function nextLevel(player : Player, end : Doors) {
 		if (FlxG.keys.justPressed.UP) {
 			levelEnded = true;
+			/*
 			var head = new FlxObject(player.x + player.width / 2, player.y + 5, 1, 1);
 			
 			FlxG.camera.follow(head, FlxCamera.STYLE_LOCKON);
 			trace(FlxG.camera.target.x);
-			new FlxTimer(1, function(Timer:FlxTimer){FlxG.switchState(new PlayState());}, 1);
+			*/
+			//FlxG.camera.flash(0, 100);
+			//FlxG.camera.shake(0.001, 1);
+			new FlxTimer(1.5, function(Timer:FlxTimer){FlxG.switchState(new PlayState());}, 1);
 		}
 	}
 	public function catD(Timer:FlxTimer) {
@@ -147,7 +159,7 @@ class PlayState extends FlxState
 				strength *= 5;
 			}
 			catGlitch.strength = strength;
-			FlxG.camera.shake(0.001*strength, 0.1);
+		//FlxG.camera.shake(0.001*strength, 0.1);
 		} else {
 			//catGlitch.strength = 0;
 			catGlitch.visible = false;
@@ -172,7 +184,16 @@ class PlayState extends FlxState
 		if (FlxG.keys.justPressed.SPACE && player.dead) {
 			spawnPlayer();
 		}
-		if (levelEnded) FlxG.camera.zoom += 0.2;
+		if (levelEnded) {
+			cameraColor = Std.int(cameraColor/1.2);
+			//FlxG.camera.angle += 1;
+			//FlxG.camera.zoom += 0.1;
+			//FlxG.camera.alpha = cameraColor;
+			FlxG.camera.alpha -= 0.015;
+			//FlxG.camera.zoom -= 0.02;
+			//FlxG.camera.x += 1.7;
+			//FlxG.camera.y += 1.7;
+		}
 		if (cat.touched || player.dead || levelEnded) return;
 		
 		if (FlxG.keys.pressed.RIGHT) {

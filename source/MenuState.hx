@@ -9,16 +9,8 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
-//import flixel.math.FlxMath;
 
-/**
- * A FlxState which can be used for the game's menu.
- */
-class MenuState extends FlxState
-{
-	/**
-	 * Function that is called up when to state is created to set it up.
-	 */
+class MenuState extends FlxState {
 	var levels : Array<Level>;
 	var selected : FlxPoint;
 	
@@ -47,24 +39,8 @@ class MenuState extends FlxState
 				add(t.glitch);
 			}
 		}
-		
-		
-		
-		//var screenWidth = 
 	}
-
-	/**
-	 * Function that is called when this state is destroyed - you might want to
-	 * consider setting all objects this state uses to null to help garbage collection.
-	 */
-	override public function destroy():Void
-	{
-		super.destroy();
-	}
-
-	/**
-	 * Function that is called once every frame.
-	 */
+	
 	override public function update():Void
 	{
 		super.update();
@@ -98,9 +74,7 @@ class MenuState extends FlxState
 				levels[i].glitch.strength = Std.int(Math.min(glitchStrength, 25));
 			}
 		}
-		
 		levels[Std.int(selected.y*4 + selected.x)].glitch.strength = 0;
-		
 		
 		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
 			FlxG.switchState(new PlayState());
