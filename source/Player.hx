@@ -26,11 +26,13 @@ class Player extends Actor {
 		height = 28;
 		offset.x = 10;
 		offset.y = 4;
+		//color = 0xFF0000;
 	}
 	override public function update() {
 		//FlxG.watch.add(velocity, "y", "y:");
 		flipX = !facingRight;
 		if (isTouching(FlxObject.FLOOR) && !dead) {
+			offset.y = 4;
 			if (Math.abs(velocity.x ) > 10) {
 				animation.play("run");
 			}
@@ -39,6 +41,7 @@ class Player extends Actor {
 			}
 		} else if(!dead){
 			animation.play("jump");
+			offset.y = -2;
 		}
 		super.update();
 		

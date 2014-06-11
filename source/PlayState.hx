@@ -107,11 +107,16 @@ class PlayState extends FlxState
 		new FlxTimer(2, function(Timer:FlxTimer) {player.animation.play("restart");}, 1);
 	}
 	public function nearLever(player : Player, lever : Lever) {
-		if (FlxG.keys.justPressed.SPACE) {
+		if (FlxG.keys.justPressed.UP) {
 			lever.state = !lever.state;	
 			for (l in lasers) {
 				if (l.ID == lever.opens) cast(l, Laser).on = !cast(l, Laser).on;
 			}
+		}
+	}
+	public function showSign(player : Player, sign : Sign) { 
+		if (!sign.text.visible) {
+			sign.shouldBeVisible = true;
 		}
 	}
 	
@@ -139,6 +144,13 @@ class PlayState extends FlxState
 		FlxG.collide(player, cat, collectCat);
 		FlxG.overlap(player, lasers, killPlayer);
 		FlxG.overlap(player, levers, nearLever);
+		FlxG.overlap(player, signs, showSign);
+		
+		for (s in signs) {
+			if (!FlxG.overlap(player, s) && cast(s, Sign).visible) {
+				cast(s, Sign).shouldBeVisible = false;
+			}
+		}
 		
 		if (FlxG.keys.justPressed.SPACE && player.dead) {
 			spawnPlayer();
@@ -154,10 +166,10 @@ class PlayState extends FlxState
 			player.facingRight = false;
 		}
 		
-		if (FlxG.keys.justPressed.UP && player.isTouching(FlxObject.FLOOR)) {
+		if (FlxG.keys.justPressed.SPACE && player.isTouching(FlxObject.FLOOR)) {
 			player.velocity.y = -250;
 		}
-		if (FlxG.keys.justReleased.UP && player.velocity.y < 0) {
+		if (FlxG.keys.justReleased.SPACE && player.velocity.y < 0) {
 			player.velocity.y  = 0;
 			player.animation.frameIndex = 2;
 		}
@@ -198,8 +210,10 @@ class PlayState extends FlxState
 					add(cat);
 				case "Sign":
 					var text = ids[2].split("=")[1].substr(0, ids[2].split("=")[1].length - 1);
-					trace(text);
-					signs.add(new Sign(posX * 16, posY * 16, text));
+					var sign = new Sign(posX * 16, posY * 16, text);
+					signs.add(sign);
+					add(sign.text);
+					
 			}
 		}
 	}

@@ -358,7 +358,7 @@
   </object>
   <object type="Sign" gid="37" x="368" y="240">
    <properties>
-    <property name="text" value="Hello Wolrd!"/>
+    <property name="text" value="Hello there\n?"/>
    </properties>
   </object>
  </objectgroup>
