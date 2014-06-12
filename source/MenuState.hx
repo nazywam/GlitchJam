@@ -70,6 +70,8 @@ class MenuState extends FlxState {
 			glitchStrength = 2;
 		}
 		
+		var s = Std.int(selected.y * 4 + selected.x);
+		
 		for (i in 0...levels.length) {
 			if (i != Std.int(selected.y * 4 + selected.x)) {
 				if (!levels[i].completed) {
@@ -78,12 +80,12 @@ class MenuState extends FlxState {
 				}
 			}
 		}
-		levels[Std.int(selected.y*4 + selected.x)].glitch.strength = 0;
+		levels[s].glitch.strength = 0;
 		if (FlxG.keys.justPressed.S) {
-			levels[Std.int(selected.y * 4 + selected.x)].complete();
+			levels[s].complete();
 		}
 		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(new PlayState(s));
 		}
 	}
 }

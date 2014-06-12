@@ -41,6 +41,14 @@ class PlayState extends FlxState
 	var levelEnded : Bool;
 	
 	var cameraColor : Int;
+	
+	var misc : FlxGroup;
+	
+	var level : Int;
+	override public function new(i : Int) {
+		level = i;
+		super();
+	}
 	override public function create() { //should use different classes for each level?
 		super.create();
 		FlxG.worldBounds.set(640, 320);
@@ -55,6 +63,9 @@ class PlayState extends FlxState
 		
 		levelEnded = false;
 		
+		misc = new FlxGroup();
+		add(misc);
+		
 		coins = new FlxGroup();
 		add(coins);
 		
@@ -66,8 +77,8 @@ class PlayState extends FlxState
 		
 		signs = new FlxGroup();
 		add(signs);
-		
-		parseMap(Assets.getText("assets/data/map.txt"));
+		parseMap(Assets.getText("assets/data/level" +level + ".txt"));
+		//parseMap(Assets.getText("assets/data/level0.txt"));
 		spawnPlayer();
 
 
@@ -78,6 +89,18 @@ class PlayState extends FlxState
 		
 		FlxG.camera.setBounds(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
 		FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER);
+		
+		trace(signs.length);
+		switch(level) {
+			case 0:
+				var a = new Sign(30 * 16, 18 * 16, "That you have to use in order to complete the level");
+				signs.add(a);
+				a.glitched = true;
+				misc.add(a.text);
+				
+			default:	
+		}
+		trace(signs.length);
 	}
 	
 	public function collectCoin(player : Player, coin : Coin) {
@@ -95,7 +118,7 @@ class PlayState extends FlxState
 			*/
 			//FlxG.camera.flash(0, 100);
 			//FlxG.camera.shake(0.001, 1);
-			new FlxTimer(1.5, function(Timer:FlxTimer){FlxG.switchState(new PlayState());}, 1);
+			new FlxTimer(1.5, function(Timer:FlxTimer){FlxG.switchState(new MenuState());}, 1);
 		}
 	}
 	public function catD(Timer:FlxTimer) {
@@ -147,7 +170,7 @@ class PlayState extends FlxState
 			sign.shouldBeVisible = true;
 		}
 	}
-	
+
 	override public function update() {
 		super.update();
 		var distance = FlxMath.distanceBetween(cat, player);
@@ -174,6 +197,8 @@ class PlayState extends FlxState
 		FlxG.overlap(player, levers, nearLever);
 		FlxG.overlap(player, signs, showSign);
 		FlxG.overlap(player, end, nextLevel);
+		//FlxG.overlap(player, misc, overlapMisc);
+		FlxG.collide(player, misc);
 		
 		for (s in signs) {
 			if (!FlxG.overlap(player, s) && cast(s, Sign).visible) {
