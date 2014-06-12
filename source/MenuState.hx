@@ -57,7 +57,9 @@ class MenuState extends FlxState {
 			saves.data.completedLevels = new Array<Int>();
 		} else {
 			for (x in 0...saves.data.completedLevels.length) {
+				remove(Reg.levels[saves.data.completedLevels[x]].glitch);
 				Reg.levels[saves.data.completedLevels[x]].complete();
+				add(Reg.levels[saves.data.completedLevels[x]].glitch);
 			}
 		}
 		//saves.erase();
@@ -92,7 +94,7 @@ class MenuState extends FlxState {
 				glitchStrength += 0.03;
 			}
 			if (FlxG.keys.justReleased.UP || FlxG.keys.justReleased.DOWN || FlxG.keys.justReleased.LEFT || FlxG.keys.justReleased.RIGHT) {
-				glitchStrength = 2;
+				glitchStrength = 3;
 			}
 			
 			var s = Std.int(selected.y * 4 + selected.x);
@@ -105,9 +107,6 @@ class MenuState extends FlxState {
 			}
 			Reg.levels[s].glitch.strength = 0;
 			
-			if (FlxG.keys.justPressed.S) {
-
-			}
 			if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
 				Reg.level = s;
 				FlxG.switchState(new PlayState(s));
