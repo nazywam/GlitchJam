@@ -31,6 +31,8 @@ class MenuState extends FlxState {
 		
 		var offset = (cWidth / 4 - 45) / 2;
 		
+		
+		
 		for (y in 0...4) {
 			for (x in 0...4) {
 				var t = new Level(cWidth / 4 * x + offset, cHeight / 4 * y + offset, y*4+x);
@@ -70,12 +72,16 @@ class MenuState extends FlxState {
 		
 		for (i in 0...levels.length) {
 			if (i != Std.int(selected.y * 4 + selected.x)) {
-				levels[i].glitch.direction = glitchDirection;
-				levels[i].glitch.strength = Std.int(Math.min(glitchStrength, 25));
+				if (!levels[i].completed) {
+					levels[i].glitch.direction = glitchDirection;
+					levels[i].glitch.strength = Std.int(Math.min(glitchStrength, 25));
+				}
 			}
 		}
 		levels[Std.int(selected.y*4 + selected.x)].glitch.strength = 0;
-		
+		if (FlxG.keys.justPressed.S) {
+			levels[Std.int(selected.y * 4 + selected.x)].complete();
+		}
 		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
 			FlxG.switchState(new PlayState());
 		}
