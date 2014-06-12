@@ -92,7 +92,7 @@ class PlayState extends FlxState
 		
 		switch(level) {
 			case 0:
-				var a = new Sign(30 * 16, 18 * 16, "Which you have to use in order to get to the level");
+				var a = new Sign(30 * 16, 18 * 16, "Which you have to use to get to the level");
 				signs.add(a);
 				a.glitched = true;
 				misc.add(a.text);
@@ -106,7 +106,7 @@ class PlayState extends FlxState
 		coin.solid = false;
 	}
 	public function nextLevel(player : Player, end : Doors) {
-		if (FlxG.keys.justPressed.UP) {
+		if (FlxG.keys.justPressed.UP && end.open) {
 			levelEnded = true;
 			/*
 			var head = new FlxObject(player.x + player.width / 2, player.y + 5, 1, 1);
@@ -270,6 +270,7 @@ class PlayState extends FlxState
 				case "End":
 					end = new Doors(posX * 16, posY * 16, false);
 					add(end);
+
 				case "Cat":
 					cat = new Cat(posX * 16, posY * 16);
 					add(cat);

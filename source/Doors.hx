@@ -8,7 +8,7 @@ import flixel.FlxSprite;
 class Doors extends FlxSprite {
 
 	var start : Bool;
-	var open : Bool;
+	public var open : Bool;
 	public function new(X : Float, Y : Float, s : Bool) {
 		super(X, Y);
 		
