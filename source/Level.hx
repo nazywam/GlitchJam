@@ -25,9 +25,11 @@ class Level extends FlxSprite {
 	}
 	public function complete() {
 		completed = true;
-		glitch.visible = false;
-		visible = true;
+		//glitch.visible = false;
 		animation.play("solved");
+		glitch = new FlxGlitchSprite(this, 4, 2, 0.01);
+		//visible = true;
+		
 	}
 	override public function update() {
 		//glitch.strength = 3;

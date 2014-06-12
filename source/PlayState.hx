@@ -90,17 +90,15 @@ class PlayState extends FlxState
 		FlxG.camera.setBounds(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
 		FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER);
 		
-		trace(signs.length);
 		switch(level) {
 			case 0:
-				var a = new Sign(30 * 16, 18 * 16, "That you have to use in order to complete the level");
+				var a = new Sign(30 * 16, 18 * 16, "Which you have to use in order to get to the level");
 				signs.add(a);
 				a.glitched = true;
 				misc.add(a.text);
 				
 			default:	
 		}
-		trace(signs.length);
 	}
 	
 	public function collectCoin(player : Player, coin : Coin) {
