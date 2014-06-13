@@ -79,6 +79,34 @@ class PlayState extends FlxState
 		add(signs);
 		parseMap(Assets.getText("assets/data/level" +level + ".txt"));
 		//parseMap(Assets.getText("assets/data/level0.txt"));
+		
+		switch(level) {
+			case 0:
+				var c = new Coin(36 * 16, 14 * 16);
+				c.bugged = true;
+				coins.add(c);
+				
+			case 1:
+				var a = new Sign(30 * 16, 18 * 16, "Which you have to use to get to the next level");
+				signs.add(a);
+				a.glitched = true;
+				misc.add(a.text);
+			case 2:
+				var c = new Coin(35*16, 16*16);
+				c.bugged = true;
+				coins.add(c);
+			case 3:
+				for (y in 0...11) {
+					var l = new Laser(16 * 11, 16 * (y + 7), true , 0, false);
+					l.solid = false;
+					lasers.add(l);
+				}
+
+			default:
+				
+		}
+		
+		
 		spawnPlayer();
 
 
@@ -90,20 +118,23 @@ class PlayState extends FlxState
 		FlxG.camera.setBounds(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
 		FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER);
 		
-		switch(level) {
-			case 0:
-				var a = new Sign(30 * 16, 18 * 16, "Which you have to use to get to the level");
-				signs.add(a);
-				a.glitched = true;
-				misc.add(a.text);
-				
-			default:	
-		}
+		
 	}
 	
 	public function collectCoin(player : Player, coin : Coin) {
 		coin.animation.play("take");
 		coin.solid = false;
+		coins.remove(coin);
+		if (coin.bugged) {
+			if (level == 0) {
+				var s = new Sign(35*16, 18*16, "That feeling though");
+				signs.add(s);
+				add(s.text);
+			} else if (level == 2 && player.acceleration.y == 550) {
+				player.acceleration.y -= 300;
+				player.animation.add("jump", [12, 13, 14, 15, 16, 17], 2);
+			}
+		}
 	}
 	public function nextLevel(player : Player, end : Doors) {
 		if (FlxG.keys.justPressed.UP && end.open) {
@@ -141,6 +172,9 @@ class PlayState extends FlxState
 		add(player);
 		FlxG.camera.follow(player);
 		FlxFlicker.flicker(player, 1, 0.1);
+		if (level == 2 && coins.countLiving() == 1 && cast(coins.getFirstExisting, Coin).bugged) {
+			player.acceleration.y = 250;
+		}
 	}
 	public function killPlayer(player : Player, laser : Laser) {
 		if (FlxFlicker.isFlickering(player) || !laser.on) return;
@@ -261,8 +295,8 @@ class PlayState extends FlxState
 					var ID = ids[2].split("=")[1].substr(0, ids[2].split("=")[1].length - 1);
 					var vertical = ids[3].split("=")[1].substr(0, ids[3].split("=")[1].length - 1);
 					var reverted = ids[4].split("=")[1].substr(0, ids[4].split("=")[1].length - 1);
-
 					lasers.add(new Laser(posX * 16, posY * 16, Std.parseInt(vertical) == 1, Std.parseInt(ID), Std.parseInt(reverted) == 1));
+					
 				case "Start":
 					playerSpawn = new Point(posX * 16+8, posY * 16);
 					start = new Doors(posX * 16, posY * 16, true);

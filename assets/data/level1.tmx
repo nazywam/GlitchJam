@@ -17,17 +17,93 @@
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
-13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
+13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,9,
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
 21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,21,
-9,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,9
+9,1,2,2,2,2,2,2,27,0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,9
 </data>
  </layer>
  <objectgroup name="" width="40" height="20">
   <object type="Start" gid="29" x="32" y="288"/>
-  <object type="End" gid="30" x="112" y="288"/>
-  <object type="Cat" gid="39" x="160" y="304"/>
+  <object type="End" gid="30" x="592" y="208"/>
+  <object type="Cat" gid="39" x="592" y="224"/>
+  <object type="Sign" gid="37" x="224" y="304">
+   <properties>
+    <property name="text" value="Use space to jump"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="144" y="320">
+   <properties>
+    <property name="ID" value="2"/>
+    <property name="V" value="0"/>
+    <property name="reverted" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="304" y="304">
+   <properties>
+    <property name="ID" value="1"/>
+    <property name="Reverted" value="1"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Lever" gid="33" x="272" y="304">
+   <properties>
+    <property name="id" value="1"/>
+   </properties>
+  </object>
+  <object type="Sign" gid="37" x="336" y="304">
+   <properties>
+    <property name="text" value="And up for operating levers"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="304" y="256">
+   <properties>
+    <property name="ID" value="1"/>
+    <property name="Reverted" value="1"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="304" y="272">
+   <properties>
+    <property name="ID" value="1"/>
+    <property name="Reverted" value="1"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="304" y="288">
+   <properties>
+    <property name="ID" value="1"/>
+    <property name="Reverted" value="1"/>
+    <property name="V" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="160" y="320">
+   <properties>
+    <property name="ID" value="2"/>
+    <property name="V" value="0"/>
+    <property name="reverted" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="176" y="320">
+   <properties>
+    <property name="ID" value="2"/>
+    <property name="V" value="0"/>
+    <property name="reverted" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="41" x="192" y="320">
+   <properties>
+    <property name="ID" value="2"/>
+    <property name="V" value="0"/>
+    <property name="reverted" value="0"/>
+   </properties>
+  </object>
+  <object type="Sign" gid="37" x="400" y="304">
+   <properties>
+    <property name="text" value="Each level has a unique bug."/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

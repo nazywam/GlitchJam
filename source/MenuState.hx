@@ -69,6 +69,9 @@ class MenuState extends FlxState {
 			Reg.levels[Reg.level].complete();
 			add(Reg.levels[Reg.level].glitch);
 			saves.data.completedLevels.push(Reg.level);
+			selected.x = (Reg.level + 1) % 4;
+			selected.y = (Reg.level + 1) / 4 ;
+			
 		}
 	}
 	override public function update() {

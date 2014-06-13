@@ -9,8 +9,12 @@ import flixel.tweens.FlxTween;
  */
 class Coin extends FlxSprite {
 
+	public var bugged : Bool;
+	
 	public function new(X:Float, Y:Float) {
 		super(X, Y);
+		bugged = false;
+		
 		loadGraphic("assets/images/stuff.png", true, 16, 16);
 		
 		var r = Std.random(6);

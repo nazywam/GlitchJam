@@ -22,7 +22,7 @@ class Laser extends FlxSprite {
 		animation.add("off", [16], 1, false);
 		if (vertical) {
 			animation.add("default", [8, 9, 10, 11, 12, 13, 14, 15], 10);
-			flipX = reverted;
+			flipY = reverted;
 			y -= 1;
 			x += 7;
 			offset.y = -1;
@@ -30,7 +30,7 @@ class Laser extends FlxSprite {
 			width = 2;
 		} else {
 			animation.add("default", [0, 1, 2, 3, 4, 5, 6, 7], 10);
-			flipY = reverted;
+			flipX = reverted;
 			x -= 1;
 			y += 7;
 			offset.x = -1;
