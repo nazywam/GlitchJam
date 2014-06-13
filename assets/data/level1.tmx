@@ -105,5 +105,10 @@
     <property name="text" value="Each level has a unique bug."/>
    </properties>
   </object>
+  <object type="Coin" gid="40" x="96" y="304"/>
+  <object type="Coin" gid="40" x="96" y="304"/>
+  <object gid="40" x="608" y="304"/>
+  <object type="Coin" gid="40" x="608" y="304"/>
+  <object type="Coin" gid="40" x="560" y="208"/>
  </objectgroup>
 </map>

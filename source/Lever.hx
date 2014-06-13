@@ -18,9 +18,9 @@ class Lever extends FlxSprite {
 		animation.add("true", [32]);
 		animation.add("false", [33]);
 		state = true;
-		width = 28;
-		offset.x = -6;
-		x -= 6;
+		width = 24;
+		offset.x = -4;
+		x -= 4;
 	}
 	override public function update() {
 		super.update();

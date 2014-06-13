@@ -333,3 +333,7 @@ type=Sign
 location=35,18,0,0
 text=This too
 
+[]
+type=Coin
+location=27,4,0,0
+

@@ -26,11 +26,25 @@ class MenuState extends FlxState {
 	var saves : FlxSave;
 	
 	override public function create() {
-		FlxG.log.redirectTraces = true;
 		super.create();
+		FlxG.log.redirectTraces = true;
+
+
+		saves = new FlxSave();
+		saves.bind("save");
+		if (saves.data.completedLevels == null) {
+			saves.data.completedLevels = new Array<Int>();
+		}
 		
-		//levels = new Array<Level>();
-		Reg.levels = new Array<Level>();
+		if (Reg.level == -1) {
+			Reg.levels = new Array<Level>();
+		} else {
+			saves.data.completedLevels.push(Reg.level);
+			Reg.level = Reg.level+1;
+			if (Reg.level < 16) {
+				FlxG.switchState(new PlayState(Reg.level));
+			}
+		}
 		glitchDirection = HORIZONTAL;
 		glitchStrength = 2;
 		selected = new FlxPoint(0,0);
@@ -51,28 +65,25 @@ class MenuState extends FlxState {
 			}
 		}
 		
-		saves = new FlxSave();
-		saves.bind("save");
-		if (saves.data.completedLevels == null) {
-			saves.data.completedLevels = new Array<Int>();
-		} else {
-			for (x in 0...saves.data.completedLevels.length) {
-				remove(Reg.levels[saves.data.completedLevels[x]].glitch);
-				Reg.levels[saves.data.completedLevels[x]].complete();
-				add(Reg.levels[saves.data.completedLevels[x]].glitch);
-			}
-		}
-		//saves.erase();
-		
-		if (Reg.level != -1) {
-			remove(Reg.levels[Reg.level].glitch);
-			Reg.levels[Reg.level].complete();
-			add(Reg.levels[Reg.level].glitch);
-			saves.data.completedLevels.push(Reg.level);
-			selected.x = (Reg.level + 1) % 4;
-			selected.y = (Reg.level + 1) / 4 ;
+		for (x in 0...saves.data.completedLevels.length) {
+			remove(Reg.levels[saves.data.completedLevels[x]].glitch);
+			Reg.levels[saves.data.completedLevels[x]].complete();
+			add(Reg.levels[saves.data.completedLevels[x]].glitch);
 			
 		}
+		
+		//if (Reg.level != -1) {
+			//remove(Reg.levels[Reg.level].glitch);
+			//Reg.levels[Reg.level].complete();
+			//add(Reg.levels[Reg.level].glitch);
+			//selected.x = (Reg.level + 1) % 4;
+			//selected.y = (Reg.level + 1) / 4 ;
+			
+			
+		//}
+		//saves.erase();
+		
+
 	}
 	override public function update() {
 		super.update();

@@ -45,6 +45,9 @@ class PlayState extends FlxState
 	var misc : FlxGroup;
 	
 	var level : Int;
+	
+	var isStupidUpArrowPressed : Bool; 
+	
 	override public function new(i : Int) {
 		level = i;
 		super();
@@ -58,6 +61,7 @@ class PlayState extends FlxState
 		background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 0, 1);
 		add(background);
 		
+		isStupidUpArrowPressed = false;
 		
 		cameraColor = 0xFFFFFF;
 		
@@ -184,11 +188,17 @@ class PlayState extends FlxState
 		player.velocity.y = 0;
 		player.solid = false;
 		player.facingRight = true;
+		if (level == 5) {
+			player.solid = true; 
+			player.acceleration.y = 550;
+			player.velocity.y = -66.6;
+		}
 		if (!laser.vertical) player.y -= 5;
 		new FlxTimer(2, function(Timer:FlxTimer) {player.animation.play("restart");}, 1);
 	}
 	public function nearLever(player : Player, lever : Lever) {
-		if (FlxG.keys.justPressed.UP) {
+		if (FlxG.keys.justPressed.UP && !isStupidUpArrowPressed) {
+			isStupidUpArrowPressed = true;
 			lever.state = !lever.state;	
 			for (l in lasers) { //runs twice? TODO
 				if (cast(l, Laser).id == lever.opens) {
@@ -205,6 +215,7 @@ class PlayState extends FlxState
 
 	override public function update() {
 		super.update();
+		if (FlxG.keys.justReleased.UP) isStupidUpArrowPressed = false;
 		var distance = FlxMath.distanceBetween(cat, player);
 		if (distance < 100 && !cat.touched && catGlitch.exists) {
 			cat.visible = false;
@@ -238,7 +249,7 @@ class PlayState extends FlxState
 			}
 		}
 		
-		if (FlxG.keys.justPressed.SPACE && player.dead) {
+		if (FlxG.keys.justPressed.SPACE && player.dead && level!=5) {
 			spawnPlayer();
 		}
 		if (levelEnded) {
@@ -251,7 +262,7 @@ class PlayState extends FlxState
 			//FlxG.camera.x += 1.7;
 			//FlxG.camera.y += 1.7;
 		}
-		if (cat.touched || player.dead || levelEnded) return;
+		if (cat.touched || ( player.dead && level != 5) || levelEnded) return;
 		
 		if (FlxG.keys.pressed.RIGHT) {
 			player.velocity.x = 125;

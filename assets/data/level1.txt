@@ -119,3 +119,19 @@ type=Sign
 location=25,19,0,0
 text=Each level has a unique bug.
 
+[]
+type=Coin
+location=6,19,0,0
+
+[]
+type=Coin
+location=6,19,0,0
+
+[]
+type=Coin
+location=38,19,0,0
+
+[]
+type=Coin
+location=35,13,0,0
+
