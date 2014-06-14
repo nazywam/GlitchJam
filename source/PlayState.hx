@@ -44,6 +44,8 @@ class PlayState extends FlxState
 	
 	var misc : FlxGroup;
 	
+	var glitch : FlxGlitchSprite;
+	
 	var level : Int;
 	
 	var isStupidUpArrowPressed : Bool; 
@@ -105,7 +107,12 @@ class PlayState extends FlxState
 					l.solid = false;
 					lasers.add(l);
 				}
-
+			case 6:
+				var a = new FlxSprite();
+				a.loadGraphic(Assets.getBitmapData("assets/images/lvl6Glitch.png"), false, 464, 320);
+				//add(a);
+				glitch = new FlxGlitchSprite(a, 15, 1);
+				add(glitch);
 			default:
 				
 		}
@@ -177,11 +184,13 @@ class PlayState extends FlxState
 		FlxG.camera.follow(player);
 		FlxFlicker.flicker(player, 1, 0.1);
 		
-		player.acceleration.y = 250;
-		for (c in coins) {
-			trace(cast(c, Coin).bugged);
-			if (cast(c, Coin).bugged) {
-				player.acceleration.y = 550;
+		if (level == 2) {
+			player.acceleration.y = 250;
+			for (c in coins) {
+				//trace(cast(c, Coin).bugged);
+				if (cast(c, Coin).bugged) {
+					player.acceleration.y = 550;
+				}
 			}
 		}
 	}
@@ -220,7 +229,13 @@ class PlayState extends FlxState
 
 	override public function update() {
 		super.update();
+		if ((player.velocity.x != 0 || Math.abs(player.velocity.y) > 10) && level == 6) {
+			glitch.strength = 15;
+		} else {
+			glitch.strength = 0;
+		}
 		if (FlxG.keys.justReleased.UP) isStupidUpArrowPressed = false;
+		
 		var distance = FlxMath.distanceBetween(cat, player);
 		if (distance < 100 && !cat.touched && catGlitch.exists) {
 			cat.visible = false;
@@ -247,6 +262,10 @@ class PlayState extends FlxState
 		FlxG.overlap(player, end, nextLevel);
 		//FlxG.overlap(player, misc, overlapMisc);
 		FlxG.collide(player, misc);
+		
+		if (player.y > FlxG.worldBounds.height || player.x < 0 || player.x > FlxG.worldBounds.width) {
+			spawnPlayer();
+		}
 		
 		for (s in signs) {
 			if (!FlxG.overlap(player, s) && cast(s, Sign).visible) {
