@@ -35,7 +35,8 @@ class MenuState extends FlxState {
 		if (saves.data.completedLevels == null) {
 			saves.data.completedLevels = new Array<Int>();
 		}
-		
+		//saves.erase();
+
 		if (Reg.level == -1) {
 			Reg.levels = new Array<Level>();
 		} else {
@@ -71,19 +72,13 @@ class MenuState extends FlxState {
 			add(Reg.levels[saves.data.completedLevels[x]].glitch);
 			
 		}
-		
-		//if (Reg.level != -1) {
-			//remove(Reg.levels[Reg.level].glitch);
-			//Reg.levels[Reg.level].complete();
-			//add(Reg.levels[Reg.level].glitch);
-			//selected.x = (Reg.level + 1) % 4;
-			//selected.y = (Reg.level + 1) / 4 ;
+		/*
+		for (x in 0...16) {
+			remove(Reg.levels[x].glitch);
+			Reg.levels[x].complete();
+			add(Reg.levels[x].glitch);
 			
-			
-		//}
-		//saves.erase();
-		
-
+		}*/
 	}
 	override public function update() {
 		super.update();

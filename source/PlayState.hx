@@ -176,8 +176,13 @@ class PlayState extends FlxState
 		add(player);
 		FlxG.camera.follow(player);
 		FlxFlicker.flicker(player, 1, 0.1);
-		if (level == 2 && coins.countLiving() == 1 && cast(coins.getFirstExisting, Coin).bugged) {
-			player.acceleration.y = 250;
+		
+		player.acceleration.y = 250;
+		for (c in coins) {
+			trace(cast(c, Coin).bugged);
+			if (cast(c, Coin).bugged) {
+				player.acceleration.y = 550;
+			}
 		}
 	}
 	public function killPlayer(player : Player, laser : Laser) {
