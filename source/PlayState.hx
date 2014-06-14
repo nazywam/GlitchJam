@@ -114,7 +114,6 @@ class PlayState extends FlxState
 				glitch = new FlxGlitchSprite(a, 15, 1);
 				add(glitch);
 			default:
-				
 		}
 		
 		
@@ -231,7 +230,7 @@ class PlayState extends FlxState
 		super.update();
 		if ((player.velocity.x != 0 || Math.abs(player.velocity.y) > 10) && level == 6) {
 			glitch.strength = 15;
-		} else {
+		} else if(level == 6) {
 			glitch.strength = 0;
 		}
 		if (FlxG.keys.justReleased.UP) isStupidUpArrowPressed = false;
