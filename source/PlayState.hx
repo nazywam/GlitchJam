@@ -112,6 +112,8 @@ class PlayState extends FlxState
 				a.loadGraphic(Assets.getBitmapData("assets/images/lvl6Glitch.png"), false, 464, 320);
 				//add(a);
 				glitch = new FlxGlitchSprite(a, 15, 1);
+				glitch.x = 20;
+				glitch.y = 20;
 				add(glitch);
 			default:
 		}
