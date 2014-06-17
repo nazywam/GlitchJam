@@ -100,7 +100,7 @@ class PlayState extends FlxState
 		parseMap(Assets.getText("assets/data/level" +level + ".txt"));
 		//parseMap(Assets.getText("assets/data/level0.txt"));
 		
-		if (level != 9) {
+		if (level != 9 && level != 2) {
 			spawnPlayer();
 		}
 
@@ -122,6 +122,7 @@ class PlayState extends FlxState
 				var c = new Coin(35*16, 16*16);
 				c.bugged = true;
 				coins.add(c);
+				spawnPlayer();
 			case 3:
 				for (y in 0...11) {
 					var l = new Laser(16 * 11, 16 * (y + 7), true , 0, false);
@@ -213,14 +214,7 @@ class PlayState extends FlxState
 	}
 	public function spawnPlayer() {
 		var flickerTime = 1.0;
-		if (level == 2) {
-			player.acceleration.y = 250;
-			for (c in coins) {
-				if (cast(c, Coin).bugged) {
-					player.acceleration.y = 550;
-				}
-			}
-		} else if (level == 9) {
+		if (level == 9) {
 			platform.y = Math.min(platform.y+16, FlxG.worldBounds.height-32);
 			playerSpawn.y = Math.min(playerSpawn.y+16, FlxG.worldBounds.height-64);
 			start.y = Math.min(start.y+16, FlxG.worldBounds.height-64);
@@ -234,6 +228,14 @@ class PlayState extends FlxState
 		add(player);
 		FlxG.camera.follow(player);
 		
+		if (level == 2) {
+			player.acceleration.y = 250;
+			for (c in coins) {
+				if (cast(c, Coin).bugged) {
+					player.acceleration.y = 550;
+				}
+			}
+		}
 		
 		FlxFlicker.flicker(player, flickerTime, 0.1);
 		
