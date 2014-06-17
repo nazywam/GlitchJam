@@ -18,7 +18,12 @@ class Laser extends FlxSprite {
 		id = i;
 		solid = true;
 		immovable = true;
-		loadGraphic(Assets.getBitmapData("assets/images/lasers.png"), true, 16, 16);
+		if (Reg.level == 14) {
+			loadGraphic(Assets.getBitmapData("assets/images/lvl14Lasers.png"), true, 16, 16);
+		} else {
+			loadGraphic(Assets.getBitmapData("assets/images/lasers.png"), true, 16, 16);
+		}
+		
 		animation.add("off", [16], 1, false);
 		if (vertical) {
 			animation.add("default", [8, 9, 10, 11, 12, 13, 14, 15], 10);

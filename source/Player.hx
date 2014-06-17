@@ -1,4 +1,5 @@
 package ;
+import flash.display.Bitmap;
 import flash.geom.Point;
 import openfl.Assets;
 import flixel.FlxObject;
@@ -12,7 +13,12 @@ class Player extends Actor {
 	public var dead : Bool;
 	public function new(spawn : Point) {
 		super(spawn.x, spawn.y);
-		loadGraphic(Assets.getBitmapData("assets/images/sprites.png"), true, 32, 32);
+		if (Reg.level == 14) {
+			loadGraphic(Assets.getBitmapData("assets/images/lvl14Sprites.png"), true, 32, 32);
+		} else {
+			loadGraphic(Assets.getBitmapData("assets/images/sprites.png"), true, 32, 32);
+		}
+		
 		animation.add("run", [0, 1, 2, 3, 4, 5], 10);
 		animation.add("stand", [6, 7, 8, 9, 10, 11], 3);
 		animation.add("jump", [12, 13, 14, 15, 16, 17], 6);
@@ -29,7 +35,7 @@ class Player extends Actor {
 	}
 	override public function update() {
 		flipX = !facingRight;
-		if (isTouching(FlxObject.FLOOR) && !dead) {
+		if ((isTouching(FlxObject.FLOOR) || (Reg.level==7 && isTouching(FlxObject.CEILING))) && !dead) {
 			offset.y = 4;
 			if (Math.abs(velocity.x ) > 10) {
 				animation.play("run");

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="20" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" source="../images/tiles.tsx"/>
+ <layer name="Tiles" width="40" height="20">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup name="" width="40" height="20">
+  <object type="Start" gid="29" x="16" y="288"/>
+  <object type="End" gid="30" x="576" y="288"/>
+  <object type="Cat" gid="39" x="272" y="304"/>
+  <object type="Laser" gid="42" x="224" y="304">
+   <properties>
+    <property name="ID" value="0"/>
+    <property name="reverted" value="1"/>
+    <property name="vertical" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="224" y="288">
+   <properties>
+    <property name="ID" value="0"/>
+    <property name="reverted" value="1"/>
+    <property name="vertical" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="288" y="304">
+   <properties>
+    <property name="ID" value="0"/>
+    <property name="reverted" value="1"/>
+    <property name="vertical" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="288" y="288">
+   <properties>
+    <property name="ID" value="0"/>
+    <property name="reverted" value="1"/>
+    <property name="vertical" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="352" y="304">
+   <properties>
+    <property name="ID" value="0"/>
+    <property name="reverted" value="1"/>
+    <property name="vertical" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="352" y="288">
+   <properties>
+    <property name="ID" value="0"/>
+    <property name="reverted" value="1"/>
+    <property name="vertical" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="416" y="304">
+   <properties>
+    <property name="ID" value="0"/>
+    <property name="reverted" value="1"/>
+    <property name="vertical" value="0"/>
+   </properties>
+  </object>
+  <object type="Laser" gid="42" x="416" y="288">
+   <properties>
+    <property name="ID" value="0"/>
+    <property name="reverted" value="1"/>
+    <property name="vertical" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

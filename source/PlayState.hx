@@ -50,6 +50,10 @@ class PlayState extends FlxState
 	
 	var isStupidUpArrowPressed : Bool; 
 	
+	var bots : FlxGroup;
+	
+	var platform : FlxSprite;
+	
 	override public function new(i : Int) {
 		level = i;
 		super();
@@ -60,7 +64,14 @@ class PlayState extends FlxState
 		FlxG.log.redirectTraces = true;
 		FlxG.mouse.visible = false;
 		background = new FlxTilemap();
-		background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 0, 1);
+		if (level == 14) {
+			background.loadMap(Assets.getText("assets/data/lvl14Background.txt"), "assets/images/lvl14Background.png", 128, 128, 0, 1);
+		} else {
+			background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 0, 1);
+		}
+		
+		
+		
 		add(background);
 		
 		isStupidUpArrowPressed = false;
@@ -71,6 +82,9 @@ class PlayState extends FlxState
 		
 		misc = new FlxGroup();
 		add(misc);
+		
+		bots = new FlxGroup();
+		add(bots);
 		
 		coins = new FlxGroup();
 		add(coins);
@@ -85,6 +99,13 @@ class PlayState extends FlxState
 		add(signs);
 		parseMap(Assets.getText("assets/data/level" +level + ".txt"));
 		//parseMap(Assets.getText("assets/data/level0.txt"));
+		
+		if (level != 9) {
+			spawnPlayer();
+		}
+
+		FlxG.camera.setBounds(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
+		FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER);
 		
 		switch(level) {
 			case 0:
@@ -115,22 +136,35 @@ class PlayState extends FlxState
 				glitch.x = 20;
 				glitch.y = 20;
 				add(glitch);
-			default:
+			case 8:
+				for (x in 0...80) {
+					player.color = Std.random(0xFFFFFF);
+					var a = new Player(new Point(20+Std.random(500), 20));
+					a.drag.x = 0;
+					a.color = Std.random(0xFFFFFF);
+					a.velocity.x = 125 - 256 * Std.random(2);
+					a.facingRight = a.velocity.x > 0; 
+					bots.add(a);
+				}
+			case 9:
+				playerSpawn = new Point(1 * 16 + 8, 2 * 16);
+				start = new Doors(1 * 16, 2 * 16, true);
+				add(start);
+				
+				platform = new FlxSprite(1 * 16, 4 * 16);
+				platform.loadGraphic("assets/images/tiles.png", false, 48, 16);
+				platform.immovable = true;
+				add(platform);
+				
+				spawnPlayer();
 		}
 		
-		
-		spawnPlayer();
-
-
 		
 		catGlitch = new FlxGlitchSprite(cat);
 		add(catGlitch);
 		cat.visible = false;
 		
-		FlxG.camera.setBounds(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
-		FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER);
-		
-		
+
 	}
 	
 	public function collectCoin(player : Player, coin : Coin) {
@@ -178,27 +212,36 @@ class PlayState extends FlxState
 		new FlxTimer(1.5, catD, 1);
 	}
 	public function spawnPlayer() {
+		var flickerTime = 1.0;
+		if (level == 2) {
+			player.acceleration.y = 250;
+			for (c in coins) {
+				if (cast(c, Coin).bugged) {
+					player.acceleration.y = 550;
+				}
+			}
+		} else if (level == 9) {
+			platform.y = Math.min(platform.y+16, FlxG.worldBounds.height-32);
+			playerSpawn.y = Math.min(playerSpawn.y+16, FlxG.worldBounds.height-64);
+			start.y = Math.min(start.y+16, FlxG.worldBounds.height-64);
+
+			flickerTime -= 0.7;
+		}
+		
 		if(player!=null)remove(player);
 		player = new Player(playerSpawn);
 		start.animation.play("close");
 		add(player);
 		FlxG.camera.follow(player);
-		FlxFlicker.flicker(player, 1, 0.1);
 		
-		if (level == 2) {
-			player.acceleration.y = 250;
-			for (c in coins) {
-				//trace(cast(c, Coin).bugged);
-				if (cast(c, Coin).bugged) {
-					player.acceleration.y = 550;
-				}
-			}
-		}
+		
+		FlxFlicker.flicker(player, flickerTime, 0.1);
+		
 	}
 	public function killPlayer(player : Player, laser : Laser) {
 		if (FlxFlicker.isFlickering(player) || !laser.on) return;
-		player.animation.play("die");
 		player.dead = true;
+		player.animation.play("die");
 		player.acceleration.y = 0;
 		player.velocity.y = 0;
 		player.solid = false;
@@ -227,13 +270,50 @@ class PlayState extends FlxState
 			sign.shouldBeVisible = true;
 		}
 	}
-
+	public function botCollide(bot : Player, map : FlxTilemap) {
+		if (bot.isTouching(FlxObject.WALL)) {
+			bot.velocity.x = 125 - 256 * Std.random(2);
+			bot.velocity.x *= (Math.random() + 0.5);
+			bot.facingRight = bot.velocity.x > 0;
+		}
+	}
 	override public function update() {
 		super.update();
 		if ((player.velocity.x != 0 || Math.abs(player.velocity.y) > 10) && level == 6) {
 			glitch.strength = 15;
 		} else if(level == 6) {
 			glitch.strength = 0;
+		} else if (level == 7) {
+			var w = FlxG.worldBounds.width-20;
+			if (player.x > w / 2) {
+				//player.scale.x = (player.x - w / 2) / 300 + 1;	
+				//player.scale.y = (player.x - w / 2) / 300 + 1;	
+				//player.scale.y = 1;
+				//player.scale.x = 1;
+				player.flipY = true;
+				player.acceleration.y = 550;
+				//player.width 
+			} else {
+				//player.scale.x = 1/(player.x / 50);	
+				//player.scale.x = -((player.x - w / 2) / 300 + 1);	
+				//player.scale.y = -((player.x - w / 2) / 300 + 1);		
+				//player.scale.y = -1;
+				//player.scale.x = -1;
+				player.flipY = false;
+				player.acceleration.y = -550;
+			}
+		} else if (level == 12) {
+			var w = FlxG.worldBounds.width-20;
+			if (player.x > w / 2) {
+				player.scale.x = Math.min((player.x - w / 2) / 200 + 1, 2);
+				player.scale.y = player.scale.x;
+				//player.width = 12 * player.scale.x;
+				//player.height = 28 * player.scale.x;
+			} else {
+				player.scale.x = Math.max(player.x / 300, 0.5);
+				player.scale.y = player.scale.x;
+			}
+
 		}
 		if (FlxG.keys.justReleased.UP) isStupidUpArrowPressed = false;
 		
@@ -261,8 +341,14 @@ class PlayState extends FlxState
 		FlxG.overlap(player, levers, nearLever);
 		FlxG.overlap(player, signs, showSign);
 		FlxG.overlap(player, end, nextLevel);
+		FlxG.collide(bots, map, botCollide);
 		//FlxG.overlap(player, misc, overlapMisc);
 		FlxG.collide(player, misc);
+		if (level == 9) {
+			FlxG.collide(player, platform);
+		}
+		
+		FlxG.watch.add(player.animation, "name", "name: ");
 		
 		if (player.y > FlxG.worldBounds.height || player.x < 0 || player.x > FlxG.worldBounds.width) {
 			spawnPlayer();
@@ -297,13 +383,19 @@ class PlayState extends FlxState
 			player.facingRight = false;
 		}
 		
-		if (FlxG.keys.justPressed.SPACE && player.isTouching(FlxObject.FLOOR)) {
+		var level7Bug : Bool = level == 7 && player.x < FlxG.worldBounds.width / 2;
+		
+		if (FlxG.keys.justPressed.SPACE && (player.isTouching(FlxObject.FLOOR) || (level7Bug && player.isTouching(FlxObject.CEILING)))) {
 			player.velocity.y = -250;
+			if (level7Bug) {
+				player.velocity.y = 250;
+			}
 		}
 		if (FlxG.keys.justReleased.SPACE && player.velocity.y < 0) {
 			player.velocity.y  = 0;
 			player.animation.frameIndex = 2;
 		}
+
 	}
 	function parseMap(map:String) {
 		var items = map.split("[]");
