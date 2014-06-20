@@ -28,7 +28,7 @@ class MenuState extends FlxState {
 	override public function create() {
 		super.create();
 		FlxG.log.redirectTraces = true;
-
+		FlxG.sound.muted = false;
 
 		saves = new FlxSave();
 		saves.bind("save");

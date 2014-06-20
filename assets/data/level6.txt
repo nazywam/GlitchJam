@@ -160,3 +160,11 @@ ID=1
 reverted=1
 vertical=0
 
+[]
+type=Coin
+location=16,4,0,0
+
+[]
+type=Coin
+location=9,10,0,0
+

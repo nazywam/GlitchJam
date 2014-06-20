@@ -18,6 +18,7 @@ import flixel.util.FlxPoint;
 import flixel.util.FlxTimer;
 import openfl.Assets;
 import flixel.FlxCamera;
+import flash.display.BitmapData;
 import flixel.addons.display.FlxZoomCamera;
 class PlayState extends FlxState
 {
@@ -54,6 +55,9 @@ class PlayState extends FlxState
 	
 	var platform : FlxSprite;
 	
+	var lvl13Glitch : FlxSprite;
+	
+	var glitches : FlxSprite;
 	override public function new(i : Int) {
 		level = i;
 		super();
@@ -64,13 +68,17 @@ class PlayState extends FlxState
 		FlxG.log.redirectTraces = true;
 		FlxG.mouse.visible = false;
 		background = new FlxTilemap();
+		if (level == 11) {
+			FlxG.switchState(new MenuState());
+		}
 		if (level == 14) {
 			background.loadMap(Assets.getText("assets/data/lvl14Background.txt"), "assets/images/lvl14Background.png", 128, 128, 0, 1);
-		} else {
+		} else if (level == 15) {
+			background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/glitches.png", 0, 0, 0, 1);
+		}else {
 			background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 0, 1);
 		}
-		
-		
+			
 		
 		add(background);
 		
@@ -158,20 +166,82 @@ class PlayState extends FlxState
 				add(platform);
 				
 				spawnPlayer();
+			case 12:
+				var w = FlxG.worldBounds.width;
+				for (x in coins) {
+					var c = cast(x, Coin);
+					c.scale.x = Math.min((c.x) / 400 + 1, 2);
+					c.scale.y = c.scale.x;
+					c.offset.y = 4 * c.scale.x * c.scale.x;
+				}
+				end.scale.x = Math.min((end.x) / 400 + 1, 2);
+				end.scale.y = end.scale.x;
+				//end.offset.y = 4 * end.scale.x * end.scale.x;
+			case 13:
+				//lvl13Glitch = new FlxSprite();
+				//lvl13Glitch.loadGraphic("assets/images/lvl13Glitch.png", false, 300, 300);
+				//add(lvl13Glitch);
+				//var temp:BitmapData = lvl13Glitch.pixels;
+			//	lvl13Glitch.pixels = temp;
+				
+				//for (x in signs) {
+					//remove(cast(x, Sign).text);
+					//add(cast(x, Sign).text);
+					//remove(s.text);
+					//add(s.text);
+					
+				//}
+			case 14:
+				start.color = 0x9d5c5f;
+				end.color = 0x36647b;
 		}
 		
 		
 		catGlitch = new FlxGlitchSprite(cat);
 		add(catGlitch);
 		cat.visible = false;
+	
+		glitches = new FlxSprite();
+		glitches.loadGraphic("assets/images/glitches.png", false, 320, 320);
+		//glitches.pixels.fillRect(new Rectangle(10,10,20,20), 0xFFFFFFFF);
+		add(glitches);
+		
+		//glitchUp();
+		//glitchUp();
+	}
+	public function glitchUp() {
+		var temp:BitmapData = glitches.pixels;
+		var x = Std.random(Std.int(glitches.width));
+		var y = Std.random(Std.int(glitches.height));
 		
 
+		var color1 = 0xF0000000 + Std.random(0xFFFFFF);
+		var color2 = 0xF0000000 + Std.random(0xFFFFFF);
+		//var color2 = Std.random(0xFFFFFF) * 0xFF;
+		
+		for (posY in 0...10) {
+			if (posY % 2 == 0) {
+				temp.fillRect(new Rectangle(x, y + posY * 2, 20, 2), color1);
+			} else {
+				temp.fillRect(new Rectangle(x, y + posY * 2, 20, 20), color2);
+			}
+		}
+		;//Std.random(0xFF0000));
+		//temp.fillRect(new Rectangle(player.x, player.y, player.width, player.height), Std.random(0xFFFFFF));
+
+		glitches.pixels = temp;
 	}
-	
 	public function collectCoin(player : Player, coin : Coin) {
 		coin.animation.play("take");
 		coin.solid = false;
 		coins.remove(coin);
+		
+		if (level == 2 && player.acceleration.y == 550) {
+			FlxG.sound.play("assets/sounds/coin.wav", 0.45, false, true, function() { FlxG.sound.play("assets/sounds/upgrade.wav"); } );
+		} else {
+			FlxG.sound.play("assets/sounds/coin.wav", 0.45);
+		}
+		
 		if (coin.bugged) {
 			if (level == 0) {
 				var s = new Sign(35*16, 18*16, "That feeling though");
@@ -180,8 +250,10 @@ class PlayState extends FlxState
 			} else if (level == 2 && player.acceleration.y == 550) {
 				player.acceleration.y -= 300;
 				player.animation.add("jump", [12, 13, 14, 15, 16, 17], 2);
+				
 			}
 		}
+		
 	}
 	public function nextLevel(player : Player, end : Doors) {
 		if (FlxG.keys.justPressed.UP && end.open) {
@@ -242,6 +314,7 @@ class PlayState extends FlxState
 	}
 	public function killPlayer(player : Player, laser : Laser) {
 		if (FlxFlicker.isFlickering(player) || !laser.on) return;
+		FlxG.sound.play("assets/sounds/die.wav", 0.25);
 		player.dead = true;
 		player.animation.play("die");
 		player.acceleration.y = 0;
@@ -281,41 +354,26 @@ class PlayState extends FlxState
 	}
 	override public function update() {
 		super.update();
-		if ((player.velocity.x != 0 || Math.abs(player.velocity.y) > 10) && level == 6) {
+		glitches.x = FlxG.camera.scroll.x;
+		if((player.velocity.x != 0 || Math.abs(player.velocity.y) > 10) && level == 6) {
 			glitch.strength = 15;
 		} else if(level == 6) {
 			glitch.strength = 0;
 		} else if (level == 7) {
 			var w = FlxG.worldBounds.width-20;
 			if (player.x > w / 2) {
-				//player.scale.x = (player.x - w / 2) / 300 + 1;	
-				//player.scale.y = (player.x - w / 2) / 300 + 1;	
-				//player.scale.y = 1;
-				//player.scale.x = 1;
 				player.flipY = true;
 				player.acceleration.y = 550;
-				//player.width 
 			} else {
-				//player.scale.x = 1/(player.x / 50);	
-				//player.scale.x = -((player.x - w / 2) / 300 + 1);	
-				//player.scale.y = -((player.x - w / 2) / 300 + 1);		
-				//player.scale.y = -1;
-				//player.scale.x = -1;
 				player.flipY = false;
 				player.acceleration.y = -550;
 			}
 		} else if (level == 12) {
-			var w = FlxG.worldBounds.width-20;
-			if (player.x > w / 2) {
-				player.scale.x = Math.min((player.x - w / 2) / 200 + 1, 2);
-				player.scale.y = player.scale.x;
-				//player.width = 12 * player.scale.x;
-				//player.height = 28 * player.scale.x;
-			} else {
-				player.scale.x = Math.max(player.x / 300, 0.5);
-				player.scale.y = player.scale.x;
-			}
-
+			var w = FlxG.worldBounds.width;
+			player.scale.x = Math.min((player.x) / 400 + 1, 2);
+			player.scale.y = player.scale.x;
+			player.offset.y = 4 * player.scale.x * player.scale.x;
+			player.acceleration.y = 550 / player.scale.x;
 		}
 		if (FlxG.keys.justReleased.UP) isStupidUpArrowPressed = false;
 		
@@ -348,9 +406,17 @@ class PlayState extends FlxState
 		FlxG.collide(player, misc);
 		if (level == 9) {
 			FlxG.collide(player, platform);
+		}else if (level == 13) {
+			var temp:BitmapData = lvl13Glitch.pixels;
+			temp.fillRect(new Rectangle(player.x, player.y, player.width, player.height), Std.random(0xFFFFFF));
+			for (x in signs) {
+				var s = cast(x, Sign);
+				if (s.tweening) {
+					temp.fillRect(new Rectangle(s.text.x, s.text.y, s.text.width, s.text.height), Std.random(0xFFFFFF));
+				}
+			}
+			lvl13Glitch.pixels = temp;
 		}
-		
-		FlxG.watch.add(player.animation, "name", "name: ");
 		
 		if (player.y > FlxG.worldBounds.height || player.x < 0 || player.x > FlxG.worldBounds.width) {
 			spawnPlayer();
@@ -392,6 +458,7 @@ class PlayState extends FlxState
 			if (level7Bug) {
 				player.velocity.y = 250;
 			}
+			FlxG.sound.play("assets/sounds/jump.wav");
 		}
 		if (FlxG.keys.justReleased.SPACE && player.velocity.y < 0) {
 			player.velocity.y  = 0;
@@ -402,6 +469,11 @@ class PlayState extends FlxState
 	function parseMap(map:String) {
 		var items = map.split("[]");
 		parseTiles(items[0].split("data=")[1]);
+		if (level == 13) {
+			lvl13Glitch = new FlxSprite();
+			lvl13Glitch.loadGraphic("assets/images/lvl13Glitch.png", false, 300, 300);
+			add(lvl13Glitch);
+		}
 		for (x in 1...items.length) {
 			//trace(x + " " + items[x]);
 			var ids = items[x].substring(2, items[x].length - 3).split("\n");
