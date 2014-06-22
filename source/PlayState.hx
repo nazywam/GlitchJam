@@ -174,6 +174,12 @@ class PlayState extends FlxState
 					c.scale.y = c.scale.x;
 					c.offset.y = 4 * c.scale.x * c.scale.x;
 				}
+				for (x in signs) {
+					var c = cast(x, Sign);
+					c.scale.x = Math.min((c.x) / 400 + 1, 2);
+					c.scale.y = c.scale.x;
+					c.offset.y = 2 * c.scale.x * c.scale.x;
+				}
 				end.scale.x = Math.min((end.x) / 400 + 1, 2);
 				end.scale.y = end.scale.x;
 				//end.offset.y = 4 * end.scale.x * end.scale.x;
@@ -236,7 +242,7 @@ class PlayState extends FlxState
 		coin.solid = false;
 		coins.remove(coin);
 		
-		if (level == 2 && player.acceleration.y == 550) {
+		if (level == 2 && player.acceleration.y == 550 && coin.bugged) {
 			FlxG.sound.play("assets/sounds/coin.wav", 0.45, false, true, function() { FlxG.sound.play("assets/sounds/upgrade.wav"); } );
 		} else {
 			FlxG.sound.play("assets/sounds/coin.wav", 0.45);
@@ -258,15 +264,7 @@ class PlayState extends FlxState
 	public function nextLevel(player : Player, end : Doors) {
 		if (FlxG.keys.justPressed.UP && end.open) {
 			levelEnded = true;
-			/*
-			var head = new FlxObject(player.x + player.width / 2, player.y + 5, 1, 1);
-			
-			FlxG.camera.follow(head, FlxCamera.STYLE_LOCKON);
-			trace(FlxG.camera.target.x);
-			*/
-			//FlxG.camera.flash(0, 100);
-			//FlxG.camera.shake(0.001, 1);
-			new FlxTimer(1.5, function(Timer:FlxTimer){FlxG.switchState(new MenuState());}, 1);
+			new FlxTimer(1, function(Timer:FlxTimer){FlxG.switchState(new MenuState());}, 1);
 		}
 	}
 	public function catD(Timer:FlxTimer) {
@@ -282,7 +280,7 @@ class PlayState extends FlxState
 		cat.touched = true;
 		cat.solid = false;
 		catGlitch.exists = false;
-		new FlxTimer(1.5, catD, 1);
+		new FlxTimer(0.5, catD, 1);
 	}
 	public function spawnPlayer() {
 		var flickerTime = 1.0;
@@ -343,6 +341,7 @@ class PlayState extends FlxState
 	public function showSign(player : Player, sign : Sign) { 
 		if (!sign.text.visible) {
 			sign.shouldBeVisible = true;
+			FlxG.sound.play("assets/sounds/sign.wav");
 		}
 	}
 	public function botCollide(bot : Player, map : FlxTilemap) {
@@ -373,7 +372,7 @@ class PlayState extends FlxState
 			player.scale.x = Math.min((player.x) / 400 + 1, 2);
 			player.scale.y = player.scale.x;
 			player.offset.y = 4 * player.scale.x * player.scale.x;
-			player.acceleration.y = 550 / player.scale.x;
+			player.acceleration.y = 540 / player.scale.x;
 		}
 		if (FlxG.keys.justReleased.UP) isStupidUpArrowPressed = false;
 		
@@ -419,7 +418,21 @@ class PlayState extends FlxState
 		}
 		
 		if (player.y > FlxG.worldBounds.height || player.x < 0 || player.x > FlxG.worldBounds.width) {
+			if (level == 12 && player.x > FlxG.worldBounds.width && signs.length < 5) {
+				for (x in 0...35) {
+					var a = new Sign(32 + x * 16, 18 * 16, "H@ckOrz");
+					signs.add(a);
+					add(a.text);
+				}
+				for (x in signs) {
+					var c = cast(x, Sign);
+					c.scale.x = Math.min((c.x) / 400 + 1, 2);
+					c.scale.y = c.scale.x;
+					c.offset.y = 2 * c.scale.x * c.scale.x;
+				}
+			}
 			spawnPlayer();
+			
 		}
 		
 		for (s in signs) {

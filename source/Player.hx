@@ -11,6 +11,7 @@ import flixel.FlxG;
 class Player extends Actor {
 	//http://opengameart.org/content/dutone-tileset-objects-and-character
 	public var dead : Bool;
+	public var walkSoundOn : Bool;
 	public function new(spawn : Point) {
 		super(spawn.x, spawn.y);
 		if (Reg.level == 14) {
@@ -32,6 +33,8 @@ class Player extends Actor {
 		height = 28;
 		offset.x = 10;
 		offset.y = 4;
+		
+		walkSoundOn = false;
 	}
 	override public function update() {
 		flipX = !facingRight;
@@ -39,6 +42,10 @@ class Player extends Actor {
 			offset.y = 4;
 			if (Math.abs(velocity.x ) > 10) {
 				animation.play("run");
+				if (!walkSoundOn) {
+					walkSoundOn = true; 
+					FlxG.sound.play("assets/sounds/footsteps.wav", 1, false, true, function foo() { walkSoundOn = false; } );
+				}
 			}
 			else {
 				animation.play("stand");

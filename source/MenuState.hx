@@ -117,8 +117,12 @@ class MenuState extends FlxState {
 			Reg.levels[s].glitch.strength = 0;
 			
 			if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
-				Reg.level = s;
-				FlxG.switchState(new PlayState(s));
+				if (s == 0 || Reg.levels[s - 1].completed) {
+					Reg.level = s;
+					FlxG.switchState(new PlayState(s));
+				} else {
+					FlxG.sound.play("assets/sounds/locked.wav", 0.5);
+				}
 			}
 			
 			solved = true;
