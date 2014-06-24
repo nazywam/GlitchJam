@@ -28,7 +28,6 @@
  <objectgroup name="" width="40" height="20">
   <object type="Start" gid="29" x="16" y="64"/>
   <object type="End" gid="30" x="592" y="64"/>
-  <object type="Cat" gid="39" x="576" y="80"/>
   <object type="Laser" gid="41" x="16" y="320">
    <properties>
     <property name="Reverted" value="0"/>

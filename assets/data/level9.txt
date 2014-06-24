@@ -36,10 +36,6 @@ type=End
 location=37,18,0,0
 
 []
-type=Cat
-location=20,19,0,0
-
-[]
 type=Laser
 location=38,16,0,0
 ID=0

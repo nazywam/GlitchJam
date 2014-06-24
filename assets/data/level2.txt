@@ -40,10 +40,6 @@ type=End
 location=37,4,0,0
 
 []
-type=Cat
-location=36,5,0,0
-
-[]
 type=Laser
 location=1,20,0,0
 Reverted=0

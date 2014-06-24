@@ -40,10 +40,6 @@ type=End
 location=37,13,0,0
 
 []
-type=Cat
-location=37,14,0,0
-
-[]
 type=Sign
 location=14,19,0,0
 text=Use space to jump

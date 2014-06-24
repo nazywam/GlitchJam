@@ -28,7 +28,6 @@
  <objectgroup name="" width="40" height="20">
   <object type="Start" gid="29" x="32" y="288"/>
   <object type="End" gid="30" x="592" y="208"/>
-  <object type="Cat" gid="39" x="592" y="224"/>
   <object type="Sign" gid="37" x="224" y="304">
    <properties>
     <property name="text" value="Use space to jump"/>

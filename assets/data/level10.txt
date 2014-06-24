@@ -40,19 +40,14 @@ type=End
 location=37,18,0,0
 
 []
-type=Cat
-location=19,6,0,0
-
-[]
 type=Coin
 location=11,5,0,0
 
 []
-type=Sign
-location=19,6,0,0
-text=Cat: "Meow!"
+type=Coin
+location=28,5,0,0
 
 []
 type=Coin
-location=28,5,0,0
+location=20,5,0,0
 

@@ -40,10 +40,6 @@ type=End
 location=27,18,0,0
 
 []
-type=Cat
-location=22,19,0,0
-
-[]
 type=Sign
 location=6,19,0,0
 text=There was supposed to be a tutorial here

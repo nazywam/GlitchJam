@@ -33,9 +33,6 @@ class PlayState extends FlxState
 	var player : Player;
 	var playerSpawn : Point;
 	
-	var cat : Cat;
-	var catGlitch : FlxGlitchSprite;
-	
 	var start : Doors;
 	var end : Doors;
 	
@@ -202,11 +199,6 @@ class PlayState extends FlxState
 				start.color = 0x9d5c5f;
 				end.color = 0x36647b;
 		}
-		
-		
-		catGlitch = new FlxGlitchSprite(cat);
-		add(catGlitch);
-		cat.visible = false;
 	
 		glitches = new FlxSprite();
 		glitches.loadGraphic("assets/images/glitches.png", false, 320, 320);
@@ -265,22 +257,7 @@ class PlayState extends FlxState
 			new FlxTimer(1, function(Timer:FlxTimer){FlxG.switchState(new MenuState());}, 1);
 		}
 	}
-	public function catD() {
-		FlxG.camera.flash(0xFFFFFF, 0.3);
-		cat.visible = false;
-		//Timer.destroy();
-		cat.touched = false;
-		cat.exists = false;
-		end.animation.play("open");
-	}
-	public function collectCat(player : Player, cat : Cat) {
-		cat.visible = true;
-		cat.touched = true;
-		cat.solid = false;
-		catGlitch.exists = false;
-		//new FlxTimer(0, catD, 1);
-		catD();
-	}
+
 	public function spawnPlayer() {
 		var flickerTime = 1.0;
 		if (level == 9) {
@@ -375,26 +352,14 @@ class PlayState extends FlxState
 		}
 		if (FlxG.keys.justReleased.UP) isStupidUpArrowPressed = false;
 		
-		var distance = FlxMath.distanceBetween(cat, player);
-		if (distance < 100 && !cat.touched && catGlitch.exists) {
-			cat.visible = false;
-			catGlitch.visible = true;
-			var strength = Std.int(Math.max(10 - distance / 20, 0));
-			if (distance < 50) {
-				strength *= 5;
-			}
-			catGlitch.strength = strength;
-		//FlxG.camera.shake(0.001*strength, 0.1);
-		} else {
-			//catGlitch.strength = 0;
-			catGlitch.visible = false;
-			cat.visible = true;
+		var dist : Float = Math.sqrt(Math.pow(player.x - end.x, 2) + Math.pow(player.y - end.y, 2));
+		if (dist < 50 && end.animation.name == "end") {
+			end.animation.play("open");
 		}
 		
 		background.scrollFactor.x = FlxG.camera.scroll.x/background.width*0.9;
 		FlxG.collide(player, map);
 		FlxG.overlap(player, coins, collectCoin);
-		FlxG.collide(player, cat, collectCat);
 		FlxG.overlap(player, lasers, killPlayer);
 		FlxG.overlap(player, levers, nearLever);
 		FlxG.overlap(player, signs, showSign);
@@ -457,7 +422,7 @@ class PlayState extends FlxState
 			//FlxG.camera.x += 1.7;
 			//FlxG.camera.y += 1.7;
 		}
-		if (cat.touched || ( player.dead && level != 5) || levelEnded) return;
+		if (( player.dead && level != 5) || levelEnded) return;
 		
 		if (FlxG.keys.pressed.RIGHT) {
 			player.velocity.x = 125;
@@ -522,10 +487,6 @@ class PlayState extends FlxState
 				case "End":
 					end = new Doors(posX * 16, posY * 16, false);
 					add(end);
-
-				case "Cat":
-					cat = new Cat(posX * 16, posY * 16);
-					add(cat);
 				case "Sign":
 					var text = ids[2].split("=")[1].substr(0, ids[2].split("=")[1].length - 1);
 					var sign = new Sign(posX * 16, posY * 16, text);

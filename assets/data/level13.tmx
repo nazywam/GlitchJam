@@ -27,8 +27,7 @@
  </layer>
  <objectgroup name="" width="40" height="20">
   <object type="Start" gid="29" x="16" y="288"/>
-  <object type="End" gid="30" x="576" y="272"/>
-  <object type="Cat" gid="39" x="16" y="64"/>
+  <object type="End" gid="30" x="16" y="48"/>
   <object type="Coin" gid="40" x="592" y="80"/>
   <object type="Coin" gid="40" x="32" y="160"/>
   <object type="Coin" gid="40" x="192" y="16"/>

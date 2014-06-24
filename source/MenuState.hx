@@ -54,7 +54,7 @@ class MenuState extends FlxState {
 			
 			if (Reg.level < 15) {
 				Reg.level++;
-				if (Reg.level == 7 || Reg.level == 12 || Reg.level == 13 || Reg.level == 14) {
+				if (Reg.level == 7 || Reg.level == 12) {
 					FlxG.sound.playMusic("assets/music/GlitchParty.mp3");
 				} else if (Reg.level == 8 || Reg.level == 13) {
 					FlxG.sound.playMusic("assets/music/GlitchLounge.mp3");
@@ -133,7 +133,7 @@ class MenuState extends FlxState {
 					trace(Reg.level);
 					if (Reg.level <= 6) {
 						FlxG.sound.playMusic("assets/music/GlitchHaven.mp3");
-					}else if (Reg.level == 7 || Reg.level == 12 || Reg.level == 14 || Reg.level == 13) {
+					}else if (Reg.level == 7 || Reg.level == 12 || Reg.level == 13 || Reg.level == 14) {
 						FlxG.sound.playMusic("assets/music/GlitchParty.mp3");
 					} else if (Reg.level != 15) {
 						FlxG.sound.playMusic("assets/music/GlitchLounge.mp3");

@@ -40,10 +40,6 @@ type=End
 location=19,18,0,0
 
 []
-type=Cat
-location=35,19,0,0
-
-[]
 type=Coin
 location=5,7,0,0
 

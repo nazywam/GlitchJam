@@ -40,10 +40,6 @@ type=End
 location=37,18,0,0
 
 []
-type=Cat
-location=2,19,0,0
-
-[]
 type=Laser
 location=17,3,0,0
 ID=0
@@ -112,7 +108,7 @@ vertical=0
 
 []
 type=Coin
-location=2,12,0,0
+location=2,18,0,0
 
 []
 type=Coin

@@ -37,11 +37,7 @@ location=2,18,0,0
 
 []
 type=End
-location=37,18,0,0
-
-[]
-type=Cat
-location=37,7,0,0
+location=37,6,0,0
 
 []
 type=Coin
@@ -49,7 +45,7 @@ location=13,8,0,0
 
 []
 type=Coin
-location=37,5,0,0
+location=36,18,0,0
 
 []
 type=Coin
