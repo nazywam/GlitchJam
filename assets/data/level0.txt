@@ -46,7 +46,7 @@ location=22,19,0,0
 []
 type=Sign
 location=6,19,0,0
-text=Here is a coin
+text=There was supposed to be a tutorial here
 
 []
 type=Coin
@@ -55,7 +55,7 @@ location=9,18,0,0
 []
 type=Sign
 location=12,19,0,0
-text=They don't really matter
+text=Explaining controls and everything
 
 []
 type=Coin
@@ -64,12 +64,12 @@ location=15,16,0,0
 []
 type=Sign
 location=18,19,0,0
-text=Here is a cat
+text=But that seems boring
 
 []
 type=Sign
 location=24,19,0,0
-text=He does matter
+text=You didn't really need it, honestly
 
 []
 type=Sign

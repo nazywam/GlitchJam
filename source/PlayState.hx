@@ -151,6 +151,7 @@ class PlayState extends FlxState
 					var a = new Player(new Point(20+Std.random(500), 20));
 					a.drag.x = 0;
 					a.color = Std.random(0xFFFFFF);
+					a.bot = true;
 					a.velocity.x = 125 - 256 * Std.random(2);
 					a.facingRight = a.velocity.x > 0; 
 					bots.add(a);
@@ -166,7 +167,7 @@ class PlayState extends FlxState
 				add(platform);
 				
 				spawnPlayer();
-			case 12:
+			case 13:
 				var w = FlxG.worldBounds.width;
 				for (x in coins) {
 					var c = cast(x, Coin);
@@ -183,7 +184,7 @@ class PlayState extends FlxState
 				end.scale.x = Math.min((end.x) / 400 + 1, 2);
 				end.scale.y = end.scale.x;
 				//end.offset.y = 4 * end.scale.x * end.scale.x;
-			case 13:
+			case 12:
 				//lvl13Glitch = new FlxSprite();
 				//lvl13Glitch.loadGraphic("assets/images/lvl13Glitch.png", false, 300, 300);
 				//add(lvl13Glitch);
@@ -211,9 +212,6 @@ class PlayState extends FlxState
 		glitches.loadGraphic("assets/images/glitches.png", false, 320, 320);
 		//glitches.pixels.fillRect(new Rectangle(10,10,20,20), 0xFFFFFFFF);
 		add(glitches);
-		
-		//glitchUp();
-		//glitchUp();
 	}
 	public function glitchUp() {
 		var temp:BitmapData = glitches.pixels;
@@ -250,7 +248,7 @@ class PlayState extends FlxState
 		
 		if (coin.bugged) {
 			if (level == 0) {
-				var s = new Sign(35*16, 18*16, "That feeling though");
+				var s = new Sign(35*16, 18*16, "PS: Coins are worthless		");
 				signs.add(s);
 				add(s.text);
 			} else if (level == 2 && player.acceleration.y == 550) {
@@ -267,10 +265,10 @@ class PlayState extends FlxState
 			new FlxTimer(1, function(Timer:FlxTimer){FlxG.switchState(new MenuState());}, 1);
 		}
 	}
-	public function catD(Timer:FlxTimer) {
+	public function catD() {
 		FlxG.camera.flash(0xFFFFFF, 0.3);
 		cat.visible = false;
-		Timer.destroy();
+		//Timer.destroy();
 		cat.touched = false;
 		cat.exists = false;
 		end.animation.play("open");
@@ -280,7 +278,8 @@ class PlayState extends FlxState
 		cat.touched = true;
 		cat.solid = false;
 		catGlitch.exists = false;
-		new FlxTimer(0.5, catD, 1);
+		//new FlxTimer(0, catD, 1);
+		catD();
 	}
 	public function spawnPlayer() {
 		var flickerTime = 1.0;
@@ -367,7 +366,7 @@ class PlayState extends FlxState
 				player.flipY = false;
 				player.acceleration.y = -550;
 			}
-		} else if (level == 12) {
+		} else if (level == 13) {
 			var w = FlxG.worldBounds.width;
 			player.scale.x = Math.min((player.x) / 400 + 1, 2);
 			player.scale.y = player.scale.x;
@@ -405,7 +404,7 @@ class PlayState extends FlxState
 		FlxG.collide(player, misc);
 		if (level == 9) {
 			FlxG.collide(player, platform);
-		}else if (level == 13) {
+		}else if (level == 12) {
 			var temp:BitmapData = lvl13Glitch.pixels;
 			temp.fillRect(new Rectangle(player.x, player.y, player.width, player.height), Std.random(0xFFFFFF));
 			for (x in signs) {
@@ -418,7 +417,7 @@ class PlayState extends FlxState
 		}
 		
 		if (player.y > FlxG.worldBounds.height || player.x < 0 || player.x > FlxG.worldBounds.width) {
-			if (level == 12 && player.x > FlxG.worldBounds.width && signs.length < 5) {
+			if (level == 13 && player.x > FlxG.worldBounds.width && signs.length < 5) {
 				for (x in 0...35) {
 					var a = new Sign(32 + x * 16, 18 * 16, "H@ckOrz");
 					signs.add(a);
@@ -431,7 +430,11 @@ class PlayState extends FlxState
 					c.offset.y = 2 * c.scale.x * c.scale.x;
 				}
 			}
-			spawnPlayer();
+			if (level == 15 && player.y > FlxG.worldBounds.height) {
+				player.y = 0;
+			} else {
+				spawnPlayer();
+			}
 			
 		}
 		
@@ -440,8 +443,8 @@ class PlayState extends FlxState
 				cast(s, Sign).shouldBeVisible = false;
 			}
 		}
-		
 		if (FlxG.keys.justPressed.SPACE && player.dead && level!=5) {
+		
 			spawnPlayer();
 		}
 		if (levelEnded) {
@@ -482,7 +485,7 @@ class PlayState extends FlxState
 	function parseMap(map:String) {
 		var items = map.split("[]");
 		parseTiles(items[0].split("data=")[1]);
-		if (level == 13) {
+		if (level == 12) {
 			lvl13Glitch = new FlxSprite();
 			lvl13Glitch.loadGraphic("assets/images/lvl13Glitch.png", false, 300, 300);
 			add(lvl13Glitch);

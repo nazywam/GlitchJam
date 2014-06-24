@@ -19,11 +19,21 @@ class MenuState extends FlxState {
 	
 	var glitchDirection : GlitchDirection;
 	var glitchStrength : Float;
-	var solved : Bool;
-	
+
 	var completing : Bool;
 	
 	var saves : FlxSave;
+	
+	function complete() {
+		completing = true;
+
+		for (i in 0...Reg.levels.length) {
+			var lx : Int = i % 4;
+			var ly : Int = Std.int(i / 4);
+			FlxTween.linearMotion(Reg.levels[i], Reg.levels[i].x, Reg.levels[i].y, 70 + lx * 45, 70 + ly * 45, 4, true,  { type : FlxTween.ONESHOT, ease:FlxEase.cubeOut } );
+		}
+		
+	}
 	
 	override public function create() {
 		super.create();
@@ -41,8 +51,16 @@ class MenuState extends FlxState {
 			Reg.levels = new Array<Level>();
 		} else {
 			saves.data.completedLevels.push(Reg.level);
-			Reg.level = Reg.level+1;
-			if (Reg.level < 16) {
+			
+			if (Reg.level < 15) {
+				Reg.level++;
+				if (Reg.level == 7 || Reg.level == 12 || Reg.level == 13 || Reg.level == 14) {
+					FlxG.sound.playMusic("assets/music/GlitchParty.mp3");
+				} else if (Reg.level == 8 || Reg.level == 13) {
+					FlxG.sound.playMusic("assets/music/GlitchLounge.mp3");
+				} else if (Reg.level == 15) {
+					FlxG.sound.music.stop();
+				}
 				FlxG.switchState(new PlayState(Reg.level));
 			}
 		}
@@ -54,9 +72,7 @@ class MenuState extends FlxState {
 		var cHeight = FlxG.camera.height;
 		
 		var offset = (cWidth / 4 - 45) / 2;
-		
-		solved = false;
-		completing = false;
+
 		for (y in 0...4) {
 			for (x in 0...4) {
 				var t = new Level(cWidth / 4 * x + offset, cHeight / 4 * y + offset, y*4+x);
@@ -72,17 +88,12 @@ class MenuState extends FlxState {
 			add(Reg.levels[saves.data.completedLevels[x]].glitch);
 			
 		}
-		/*
-		for (x in 0...16) {
-			remove(Reg.levels[x].glitch);
-			Reg.levels[x].complete();
-			add(Reg.levels[x].glitch);
-			
-		}*/
+	//	FlxG.sound.playMusic("assets/music/GlitchHaven.mp3");
+		completing = false;
 	}
 	override public function update() {
 		super.update();
-		if (!solved) {
+		if (!completing) {
 			if (FlxG.keys.justPressed.RIGHT) {
 				selected.x = Math.min(selected.x+1, 3);
 				glitchDirection = HORIZONTAL;
@@ -119,29 +130,26 @@ class MenuState extends FlxState {
 			if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
 				if (s == 0 || Reg.levels[s - 1].completed) {
 					Reg.level = s;
+					trace(Reg.level);
+					if (Reg.level <= 6) {
+						FlxG.sound.playMusic("assets/music/GlitchHaven.mp3");
+					}else if (Reg.level == 7 || Reg.level == 12 || Reg.level == 14 || Reg.level == 13) {
+						FlxG.sound.playMusic("assets/music/GlitchParty.mp3");
+					} else if (Reg.level != 15) {
+						FlxG.sound.playMusic("assets/music/GlitchLounge.mp3");
+					}
 					FlxG.switchState(new PlayState(s));
 				} else {
 					FlxG.sound.play("assets/sounds/locked.wav", 0.5);
 				}
 			}
-			
-			solved = true;
-			for (i in 0...Reg.levels.length) {
-				if (!Reg.levels[i].completed) solved = false;
-			}
-			if (solved) {
-				for (i in 0...Reg.levels.length) {
-					Reg.levels[i].glitch.visible = false;
-					Reg.levels[i].visible = true;
-				}
-			}
-		} else if(!completing){
-			completing = true;
-			
-			for (i in 0...Reg.levels.length) {
-				var lx : Int = i % 4;
-				var ly : Int = Std.int(i / 4);
-				FlxTween.linearMotion(Reg.levels[i], Reg.levels[i].x, Reg.levels[i].y, 70 + lx * 45, 70 + ly * 45, 5, true,  { type : FlxTween.ONESHOT, ease:FlxEase.cubeOut } );
+			if (Reg.level == -1) {
+			//	complete();
+				//for (x in Reg.levels) {
+					//cast(x, Level).glitch.strength -= 1;
+					//if (cast(x, Level).glitch.strength == 0) {
+				//	}
+			//	}
 			}
 		}
 	}

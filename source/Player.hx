@@ -12,6 +12,7 @@ class Player extends Actor {
 	//http://opengameart.org/content/dutone-tileset-objects-and-character
 	public var dead : Bool;
 	public var walkSoundOn : Bool;
+	public var bot : Bool;
 	public function new(spawn : Point) {
 		super(spawn.x, spawn.y);
 		if (Reg.level == 14) {
@@ -34,6 +35,7 @@ class Player extends Actor {
 		offset.x = 10;
 		offset.y = 4;
 		
+		bot = false;
 		walkSoundOn = false;
 	}
 	override public function update() {
@@ -44,7 +46,9 @@ class Player extends Actor {
 				animation.play("run");
 				if (!walkSoundOn) {
 					walkSoundOn = true; 
-					FlxG.sound.play("assets/sounds/footsteps.wav", 1, false, true, function foo() { walkSoundOn = false; } );
+					if (!bot) {
+						FlxG.sound.play("assets/sounds/footsteps.wav", 1, false, true, function foo() { walkSoundOn = false; } );
+					}
 				}
 			}
 			else {

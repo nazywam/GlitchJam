@@ -63,13 +63,6 @@ location=2,7,0,0
 
 []
 type=Laser
-location=17,5,0,0
-ID=0
-reverted=1
-vertical=0
-
-[]
-type=Laser
 location=17,4,0,0
 ID=0
 reverted=1
