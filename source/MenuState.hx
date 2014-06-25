@@ -12,6 +12,8 @@ import flixel.util.FlxPoint;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxSave;
+import flixel.input.keyboard.FlxKey;
+
 
 class MenuState extends FlxState {
 	//var levels : Array<Level>;
@@ -23,7 +25,6 @@ class MenuState extends FlxState {
 	var completing : Bool;
 	
 	var saves : FlxSave;
-	
 	function complete() {
 		completing = true;
 
@@ -38,15 +39,17 @@ class MenuState extends FlxState {
 	override public function create() {
 		super.create();
 		FlxG.log.redirectTraces = true;
-		FlxG.sound.muted = false;
+		//FlxG.sound.muted = false;
 
 		saves = new FlxSave();
 		saves.bind("save");
 		if (saves.data.completedLevels == null) {
 			saves.data.completedLevels = new Array<Int>();
 		}
+		
+		FlxG.sound.muteKeys = ['M'];
+		
 		//saves.erase();
-
 		if (Reg.level == -1) {
 			Reg.levels = new Array<Level>();
 		} else {
@@ -54,7 +57,7 @@ class MenuState extends FlxState {
 			
 			if (Reg.level < 15) {
 				Reg.level++;
-				if (Reg.level == 7 || Reg.level == 12) {
+				if (Reg.level == 7 || Reg.level == 12 || Reg.level == 14) {
 					FlxG.sound.playMusic("assets/music/GlitchParty.mp3");
 				} else if (Reg.level == 8 || Reg.level == 13) {
 					FlxG.sound.playMusic("assets/music/GlitchLounge.mp3");
@@ -133,7 +136,7 @@ class MenuState extends FlxState {
 					trace(Reg.level);
 					if (Reg.level <= 6) {
 						FlxG.sound.playMusic("assets/music/GlitchHaven.mp3");
-					}else if (Reg.level == 7 || Reg.level == 12 || Reg.level == 13 || Reg.level == 14) {
+					}else if (Reg.level == 7 || Reg.level == 12 || Reg.level == 14) {
 						FlxG.sound.playMusic("assets/music/GlitchParty.mp3");
 					} else if (Reg.level != 15) {
 						FlxG.sound.playMusic("assets/music/GlitchLounge.mp3");

@@ -30,6 +30,11 @@
   <object type="End" gid="30" x="304" y="288"/>
   <object type="Coin" gid="40" x="80" y="112"/>
   <object type="Coin" gid="40" x="544" y="112"/>
-  <object gid="40" x="320" y="176"/>
+  <object type="Coin" gid="40" x="320" y="176"/>
+  <object type="Sign" gid="37" x="304" y="192">
+   <properties>
+    <property name="text" value="You're not like everyone, are you?"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

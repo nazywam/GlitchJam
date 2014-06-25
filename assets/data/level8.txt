@@ -47,3 +47,12 @@ location=5,7,0,0
 type=Coin
 location=34,7,0,0
 
+[]
+type=Coin
+location=20,11,0,0
+
+[]
+type=Sign
+location=19,12,0,0
+text=You're not like everyone, are you?
+

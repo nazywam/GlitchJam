@@ -31,5 +31,10 @@
   <object type="Coin" gid="40" x="64" y="240"/>
   <object type="Coin" gid="40" x="608" y="288"/>
   <object type="Coin" gid="40" x="96" y="224"/>
+  <object type="Sign" gid="37" x="208" y="96">
+   <properties>
+    <property name="text" value="Some levels are normal"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

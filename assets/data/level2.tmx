@@ -22,19 +22,12 @@
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
 13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,
 21,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,3,0,0,21,
-9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9
+9,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9
 </data>
  </layer>
  <objectgroup name="" width="40" height="20">
   <object type="Start" gid="29" x="16" y="64"/>
   <object type="End" gid="30" x="592" y="64"/>
-  <object type="Laser" gid="41" x="16" y="320">
-   <properties>
-    <property name="Reverted" value="0"/>
-    <property name="V" value="0"/>
-    <property name="vertical" value="0"/>
-   </properties>
-  </object>
   <object type="Laser" gid="41" x="32" y="320">
    <properties>
     <property name="Reverted" value="0"/>
@@ -301,7 +294,7 @@
   </object>
   <object type="Sign" gid="37" x="416" y="80">
    <properties>
-    <property name="text" value="lufituaeb si yrtemmyS"/>
+    <property name="text" value="lufituaeb si tsartnoC"/>
    </properties>
   </object>
   <object type="Sign" gid="37" x="48" y="288">
@@ -312,8 +305,9 @@
   <object type="Coin" gid="40" x="64" y="272"/>
   <object type="Sign" gid="37" x="560" y="288">
    <properties>
-    <property name="text" value="This too"/>
+    <property name="text" value="part a ton si sihT"/>
    </properties>
   </object>
+  <object type="Coin" gid="40" x="16" y="256"/>
  </objectgroup>
 </map>

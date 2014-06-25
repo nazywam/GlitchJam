@@ -77,9 +77,9 @@
     <property name="vertical" value="0"/>
    </properties>
   </object>
-  <object type="Sign" gid="37" x="64" y="96">
+  <object type="Sign" gid="37" x="176" y="96">
    <properties>
-    <property name="text" value="Die soon or never"/>
+    <property name="text" value="You're not going to die young, use that"/>
    </properties>
   </object>
   <object type="Laser" gid="42" x="288" y="64">

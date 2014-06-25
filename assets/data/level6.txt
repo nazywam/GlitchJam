@@ -90,8 +90,8 @@ vertical=0
 
 []
 type=Sign
-location=4,6,0,0
-text=Die soon or never
+location=11,6,0,0
+text=You're not going to die young, use that
 
 []
 type=Laser
