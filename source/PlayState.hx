@@ -64,7 +64,10 @@ class PlayState extends FlxState
 		FlxG.worldBounds.set(640, 320);
 		FlxG.log.redirectTraces = true;
 		FlxG.mouse.visible = false;
-		FlxG.sound.music.volume = 0.75;
+		
+		if (level != 15) {
+			FlxG.sound.music.volume = 0.9;
+		}
 
 		background = new FlxTilemap();
 		if (level == 11) {
@@ -296,7 +299,7 @@ class PlayState extends FlxState
 	}
 	public function killPlayer(player : Player, laser : Laser) {
 		if (FlxFlicker.isFlickering(player) || !laser.on) return;
-		FlxG.sound.play("assets/sounds/die.wav", 0.25);
+		FlxG.sound.play("assets/sounds/die.wav", 0.5);
 		player.dead = true;
 		player.animation.play("die");
 		player.acceleration.y = 0;

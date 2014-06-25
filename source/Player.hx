@@ -47,7 +47,7 @@ class Player extends Actor {
 				if (!walkSoundOn) {
 					walkSoundOn = true; 
 					if (!bot) {
-						FlxG.sound.play("assets/sounds/footsteps.wav", 1, false, true, function foo() { walkSoundOn = false; } );
+						FlxG.sound.play("assets/sounds/footsteps.wav", 0.75, false, true, function foo() { walkSoundOn = false; } );
 					}
 				}
 			}
