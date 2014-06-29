@@ -308,6 +308,5 @@
     <property name="text" value="part a ton si sihT"/>
    </properties>
   </object>
-  <object type="Coin" gid="40" x="16" y="256"/>
  </objectgroup>
 </map>

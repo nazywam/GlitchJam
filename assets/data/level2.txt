@@ -322,7 +322,3 @@ type=Sign
 location=35,18,0,0
 text=part a ton si sihT
 
-[]
-type=Coin
-location=1,16,0,0
-

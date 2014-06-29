@@ -20,7 +20,7 @@ class Coin extends FlxSprite {
 		var r = Std.random(6);
 		animation.add("default", [r, (r+1)%6, (r+2)%6, (r+3)%6, (r+4)%6, (r+5)%6], 10);
 		
-		animation.add("take", [6, 7, 8, 9, 10, 11], 25, false);
+		animation.add("take", [6, 7, 8, 9, 10, 11], 15, false);
 		animation.play("default");
 		
 		
@@ -42,6 +42,8 @@ class Coin extends FlxSprite {
 	override public function update() {
 		super.update();
 		if (animation.name == "take" && animation.frameIndex == 11) {
+			trace(animation.name);
+
 			alpha = 0;
 		}
 	}

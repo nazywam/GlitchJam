@@ -55,6 +55,9 @@ class PlayState extends FlxState
 	var lvl13Glitch : FlxSprite;
 	
 	var playerClone : Player;
+	
+	var ending : FlxSprite;
+	
 	override public function new(i : Int) {
 		level = i;
 		super();
@@ -155,7 +158,7 @@ class PlayState extends FlxState
 				glitch.y = 20;
 				add(glitch);
 			case 7:
-				var a = new Sign(30 * 16, 18 * 16, "Did you acutally turn your head around?");
+				var a = new Sign(30 * 16, 18 * 16, "Did you acutally turn your upside down?");
 				a.angle = 180;
 				a.text.angle = 180;
 				signs.add(a);
@@ -235,13 +238,18 @@ class PlayState extends FlxState
 			case 14:
 				start.color = 0x9d5c5f;
 				end.color = 0x36647b;
+			case 15:
+				end.alpha = 0;
+				ending = new FlxSprite(0,0);
+				ending.loadGraphic("assets/images/blueScreen.png");
+				ending.visible = false;
 		}
 	
 	}
 	public function collectCoin(player : Player, coin : Coin) {
 		coin.animation.play("take");
 		coin.solid = false;
-		coins.remove(coin);
+		//coins.remove(coin);
 		
 		if (level == 2 && player.acceleration.y == 550 && coin.bugged) {
 			FlxG.sound.play("assets/sounds/coin.wav", 0.45, false, true, function() { FlxG.sound.play("assets/sounds/upgrade.wav"); } );
@@ -270,14 +278,44 @@ class PlayState extends FlxState
 	}
 
 	public function spawnPlayer() {
+		
+		var a = new FlxText(start.x, start.y - 10);
+		a.text = Std.string(Reg.level);
+		a.x += 8;
+		
+		if (Reg.level >= 10) {
+			a.x -= 2;
+		}
+		add(a);
+		
+		if (Reg.level == 5) {
+			a.text = 'five'; 
+			a.x -= 5;
+		}
+		if (Reg.level == 7) {
+			a.text = 'siedem';
+			a.x -= 12;
+		}
+		if (Reg.level == 9) {
+			trace(start.y);
+			a.text = Std.string(Reg.level - (start.y - 32) / 16);
+		}
+		a.x -= a.width / 2;
+		add(a);
+
+				
 		var flickerTime = 1.0;
+
 		if (level == 9) {
 			platform.y = Math.min(platform.y+16, FlxG.worldBounds.height-32);
 			playerSpawn.y = Math.min(playerSpawn.y+16, FlxG.worldBounds.height-64);
 			start.y = Math.min(start.y+16, FlxG.worldBounds.height-64);
 
 			flickerTime -= 0.7;
+		} if (level == 10) {
+			a.text = '01';
 		}
+
 		
 		if(player!=null)remove(player);
 		player = new Player(playerSpawn);
@@ -340,6 +378,19 @@ class PlayState extends FlxState
 	}
 	override public function update() {
 		super.update();
+		
+		if (player.velocity.y > 5000 && Reg.level == 15 && !ending.visible) {
+			FlxG.camera.shake();
+			add(ending);
+			ending.visible = true;
+			ending.x = FlxG.camera.scroll.x;
+		}
+		if ( (FlxG.keys.justPressed.ESCAPE || FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)  && level == 15) {
+			if (ending.visible) {
+				levelEnded = true;
+				new FlxTimer(1, function(Timer:FlxTimer){FlxG.switchState(new MenuState());}, 1);
+			}
+		}
 		if((player.velocity.x != 0 || Math.abs(player.velocity.y) > 10) && level == 6) {
 			glitch.strength = 15;
 		} else if(level == 6) {
@@ -394,7 +445,13 @@ class PlayState extends FlxState
 			FlxG.collide(player, platform);
 		}else if (level == 12) {
 			var temp:BitmapData = lvl13Glitch.pixels;
-			temp.fillRect(new Rectangle(player.x, player.y, player.width, player.height), Std.random(0xFFFFFF));
+			if (player.animation.name == "run" || player.animation.name == "jump") {
+				temp.fillRect(new Rectangle(player.x, player.y+4, player.width, player.height-4), Std.random(0xFFFFFF));
+			} else {
+				temp.fillRect(new Rectangle(player.x, player.y-2, player.width, player.height+2), Std.random(0xFFFFFF));
+			}
+			
+			
 			for (x in signs) {
 				var s = cast(x, Sign);
 				if (s.tweening) {
@@ -425,7 +482,11 @@ class PlayState extends FlxState
 			}
 			
 		}
-		
+		for (c in coins) {
+			if (cast(c, Coin).alpha == 0) {
+				coins.remove(c);
+			}
+		}
 		for (s in signs) {
 			if (!FlxG.overlap(player, s) && cast(s, Sign).visible) {
 				cast(s, Sign).shouldBeVisible = false;
@@ -447,13 +508,16 @@ class PlayState extends FlxState
 		}
 		if (( player.dead && level != 5) || levelEnded) return;
 		
-		if (FlxG.keys.pressed.RIGHT) {
-			player.velocity.x = 125;
-			player.facingRight = true;
-		} else if (FlxG.keys.pressed.LEFT) {
-			player.velocity.x = -125;
-			player.facingRight = false;
+		if (!(level == 15 && ending.visible)) {
+			if (FlxG.keys.pressed.RIGHT) {
+				player.velocity.x = 125;
+				player.facingRight = true;
+			} else if (FlxG.keys.pressed.LEFT) {
+				player.velocity.x = -125;
+				player.facingRight = false;
+			}
 		}
+		
 		
 		var level7Bug : Bool = level == 7 && player.x < FlxG.worldBounds.width / 2;
 		

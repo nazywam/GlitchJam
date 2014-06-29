@@ -27,8 +27,9 @@
  </layer>
  <objectgroup name="" width="40" height="20">
   <object type="Start" gid="29" x="288" y="80"/>
-  <object type="End" gid="30" x="608" y="64"/>
+  <object type="Coin" gid="30" x="608" y="64"/>
   <object type="Coin" gid="40" x="304" y="304"/>
   <object type="Coin" gid="40" x="16" y="80"/>
+  <object type="End" gid="30" x="288" y="128"/>
  </objectgroup>
 </map>

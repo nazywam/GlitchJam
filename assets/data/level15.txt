@@ -36,7 +36,7 @@ type=Start
 location=18,5,0,0
 
 []
-type=End
+type=Coin
 location=38,4,0,0
 
 []
@@ -46,4 +46,8 @@ location=19,19,0,0
 []
 type=Coin
 location=1,5,0,0
+
+[]
+type=End
+location=18,8,0,0
 

@@ -13,7 +13,7 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
-
+import openfl.Assets;
 
 class MenuState extends FlxState {
 	var selected : FlxPoint;
@@ -22,6 +22,8 @@ class MenuState extends FlxState {
 	var glitchStrength : Float;
 
 	var completing : Bool;
+	
+	var selection : FlxSprite;
 	
 	var saves : FlxSave;
 	function complete() {
@@ -66,7 +68,10 @@ class MenuState extends FlxState {
 				FlxG.switchState(new PlayState(Reg.level));
 			}
 		}
-
+		if (Reg.level == 15) {
+			saves.data.completedLevels[15] = true;
+		}
+		
 		glitchDirection = HORIZONTAL;
 		glitchStrength = 2;
 		selected = new FlxPoint(0,0);
@@ -84,19 +89,17 @@ class MenuState extends FlxState {
 				add(t.glitch);
 			}
 		}
-		
-		trace(saves.data.completedLevels[0]);
 
-		//if (Reg.level == -1) {
-			for (x in 0...saves.data.completedLevels.length) {
-				if (saves.data.completedLevels[x]) {
-					remove(Reg.levels[x].glitch);
-					Reg.levels[x].complete();
-					add(Reg.levels[x].glitch);	
-				}
+		for (x in 0...saves.data.completedLevels.length) {
+			if (saves.data.completedLevels[x]) {
+				remove(Reg.levels[x].glitch);
+				Reg.levels[x].complete();
+				add(Reg.levels[x].glitch);	
 			}
-		//}
+		}
 
+		trace(saves.data.completedLevels[15]);
+		
 		completing = false;
 		if (Reg.level == 15) {
 			for (x in Reg.levels) {
@@ -106,11 +109,25 @@ class MenuState extends FlxState {
 			}
 			complete();
 		}
-	//	FlxG.sound.playMusic("assets/music/GlitchHaven.mp3");
+		
+		selection = new FlxSprite(100,100);
+		selection.loadGraphic(Assets.getBitmapData("assets/images/sprites.png"), true, 32, 32);
+		selection.animation.add("default", [36, 37], 1);
+		selection.animation.play("default");
+		selection.scale.x = 1.2;
+		selection.scale.y = 1.2;
+		add(selection);
+		
+		
 	}
 	override public function update() {
 		super.update();
 		if (!completing) {
+			
+			if (FlxG.keys.pressed.R && FlxG.keys.pressed.S && FlxG.keys.pressed.T) {
+				saves.erase();
+			}
+			
 			if (FlxG.keys.justPressed.RIGHT || FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.UP) {
 				FlxG.sound.play("assets/sounds/bip.wav", 0.5);
 			}
@@ -143,9 +160,11 @@ class MenuState extends FlxState {
 				if (i != Std.int(selected.y * 4 + selected.x)) {
 					Reg.levels[i].glitch.direction = glitchDirection;
 					Reg.levels[i].glitch.strength = Std.int(Math.min(glitchStrength, 25));
+					Reg.levels[i].glitch.alpha = 0.5;
 				}
 			}
 			Reg.levels[s].glitch.strength = 0;
+			Reg.levels[s].glitch.alpha = 1;
 			
 			if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
 				if (s == 0 || Reg.levels[s - 1].completed) {
@@ -163,6 +182,16 @@ class MenuState extends FlxState {
 					FlxG.sound.play("assets/sounds/locked.wav", 1);
 				}
 			}
+			if (selected.x == 0 && selected.y == 0) {
+				selection.visible = true;
+			} else {
+				selection.visible = Reg.levels[Std.int(selected.x + selected.y * 4)-1].completed;
+			}
+			
+			selection.x = Reg.levels[Std.int(selected.x + selected.y * 4)].x + 7;
+			selection.y = Reg.levels[Std.int(selected.x + selected.y * 4)].y + 40;
+		} else {
+			selection.visible = false;
 		}
 	}
 }
