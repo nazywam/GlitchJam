@@ -158,7 +158,7 @@ class PlayState extends FlxState
 				glitch.y = 20;
 				add(glitch);
 			case 7:
-				var a = new Sign(30 * 16, 18 * 16, "Did you acutally turn your upside down?");
+				var a = new Sign(30 * 16, 18 * 16, "Did you acutally turn your head upside down?");
 				a.angle = 180;
 				a.text.angle = 180;
 				signs.add(a);

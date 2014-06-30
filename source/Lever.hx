@@ -26,5 +26,4 @@ class Lever extends FlxSprite {
 		super.update();
 		animation.play(Std.string(state));
 	}
-	
 }

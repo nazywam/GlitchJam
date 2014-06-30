@@ -25,13 +25,16 @@ class MenuState extends FlxState {
 	
 	var selection : FlxSprite;
 	
+	var levels:Array<Level> = [];
+	
 	var saves : FlxSave;
+	
 	function complete() {
 		completing = true;
-		for (i in 0...Reg.levels.length) {
+		for (i in 0...levels.length) {
 			var lx : Int = i % 4;
 			var ly : Int = Std.int(i / 4);
-			FlxTween.linearMotion(Reg.levels[i], Reg.levels[i].x, Reg.levels[i].y, 70 + lx * 45, 70 + ly * 45, 4, true,  { type : FlxTween.ONESHOT, ease:FlxEase.cubeOut } );
+			FlxTween.linearMotion(levels[i], levels[i].x, levels[i].y, 70 + lx * 45, 70 + ly * 45, 4, true,  { type : FlxTween.ONESHOT, ease:FlxEase.cubeOut } );
 		}
 		
 	}
@@ -52,8 +55,8 @@ class MenuState extends FlxState {
 		FlxG.sound.muteKeys = ['M'];
 		
 		//saves.erase();
-		if (Reg.level == -1 || Reg.level == 15) {
-			Reg.levels = new Array<Level>();
+		
+		if (Reg.level == -1) {
 		} else {
 			saves.data.completedLevels[Reg.level] = true;
 			if (Reg.level < 15) {
@@ -66,44 +69,37 @@ class MenuState extends FlxState {
 					FlxG.sound.music.stop();
 				}
 				FlxG.switchState(new PlayState(Reg.level));
+				FlxG.camera.color = 0x000000;
 			}
 		}
 		if (Reg.level == 15) {
 			saves.data.completedLevels[15] = true;
 		}
-		
-		glitchDirection = HORIZONTAL;
-		glitchStrength = 2;
-		selected = new FlxPoint(0,0);
+		levels = new Array<Level>();
 		
 		var cWidth = FlxG.camera.width;
 		var cHeight = FlxG.camera.height;
-		
 		var offset = (cWidth / 4 - 45) / 2;
 
+		
 		for (y in 0...4) {
 			for (x in 0...4) {
 				var t = new Level(cWidth / 4 * x + offset, cHeight / 4 * y + offset, y*4+x);
-				Reg.levels.push(t);
+				levels.push(t);
+				if (saves.data.completedLevels[y * 4 + x]) {
+					levels[y * 4 + x].complete();
+				}
 				add(t);
 				add(t.glitch);
 			}
 		}
-
-		for (x in 0...saves.data.completedLevels.length) {
-			if (saves.data.completedLevels[x]) {
-				remove(Reg.levels[x].glitch);
-				//trace(Reg.levels[x].x);
-				Reg.levels[x].complete();
-				add(Reg.levels[x].glitch);	
-			}
-		}
-
-		//trace(saves.data.completedLevels[15]);
+		glitchDirection = HORIZONTAL;
+		glitchStrength = 2;
+		selected = new FlxPoint(0, 0);
 		
 		completing = false;
 		if (Reg.level == 15) {
-			for (x in Reg.levels) {
+			for (x in levels) {
 				var l = cast(x, Level);
 				l.visible = true;
 				l.glitch.visible = false;
@@ -153,18 +149,18 @@ class MenuState extends FlxState {
 			
 			var s = Std.int(selected.y * 4 + selected.x);
 			
-			for (i in 0...Reg.levels.length) {
+			for (i in 0...levels.length) {
 				if (i != Std.int(selected.y * 4 + selected.x)) {
-					Reg.levels[i].glitch.direction = glitchDirection;
-					Reg.levels[i].glitch.strength = Std.int(Math.min(glitchStrength, 25));
-					Reg.levels[i].glitch.alpha = 0.5;
+					levels[i].glitch.direction = glitchDirection;
+					levels[i].glitch.strength = Std.int(Math.min(glitchStrength, 25));
+					levels[i].glitch.alpha = 0.5;
 				}
 			}
-			Reg.levels[s].glitch.strength = 0;
-			Reg.levels[s].glitch.alpha = 1;
+			levels[s].glitch.strength = 0;
+			levels[s].glitch.alpha = 1;
 			
 			if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE) {
-				if (s == 0 || Reg.levels[s - 1].completed) {
+				if (s == 0 || levels[s - 1].completed) {
 					Reg.level = s;
 					//trace(Reg.level);
 					if (Reg.level <= 6) {
@@ -182,11 +178,11 @@ class MenuState extends FlxState {
 			if (selected.x == 0 && selected.y == 0) {
 				selection.visible = true;
 			} else {
-				selection.visible = Reg.levels[Std.int(selected.x + selected.y * 4)-1].completed;
+				selection.visible = levels[Std.int(selected.x + selected.y * 4)-1].completed;
 			}
 			
-			selection.x = Reg.levels[Std.int(selected.x + selected.y * 4)].x + 7;
-			selection.y = Reg.levels[Std.int(selected.x + selected.y * 4)].y + 40;
+			selection.x = levels[Std.int(selected.x + selected.y * 4)].x + 7;
+			selection.y = levels[Std.int(selected.x + selected.y * 4)].y + 40;
 		} else {
 			selection.visible = false;
 		}
