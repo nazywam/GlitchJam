@@ -297,7 +297,6 @@ class PlayState extends FlxState
 			a.x -= 12;
 		}
 		if (Reg.level == 9) {
-			trace(start.y);
 			a.text = Std.string(Reg.level - (start.y - 32) / 16);
 		}
 		a.x -= a.width / 2;
@@ -539,7 +538,6 @@ class PlayState extends FlxState
 		parseTiles(items[0].split("data=")[1]);
 
 		for (x in 1...items.length) {
-			//trace(x + " " + items[x]);
 			var ids = items[x].substring(2, items[x].length - 3).split("\n");
 			
 			var entry = ids[0].split("=");
@@ -549,8 +547,6 @@ class PlayState extends FlxState
 			var posX = Std.parseInt(pos2[0]);
 			var posY = Std.parseInt(pos2[1]) -1;
 			var type = entry[1].substring(0, entry[1].length - 1);
-			//trace (entry[0] + "X" + entry[1]);
-			//trace( + " " + posX + " " + posY);
 			switch(type) {
 				case "Coin":
 					coins.add(new Coin(posX*16, posY*16));

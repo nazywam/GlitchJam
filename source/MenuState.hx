@@ -93,12 +93,13 @@ class MenuState extends FlxState {
 		for (x in 0...saves.data.completedLevels.length) {
 			if (saves.data.completedLevels[x]) {
 				remove(Reg.levels[x].glitch);
+				//trace(Reg.levels[x].x);
 				Reg.levels[x].complete();
 				add(Reg.levels[x].glitch);	
 			}
 		}
 
-		trace(saves.data.completedLevels[15]);
+		//trace(saves.data.completedLevels[15]);
 		
 		completing = false;
 		if (Reg.level == 15) {
@@ -123,10 +124,6 @@ class MenuState extends FlxState {
 	override public function update() {
 		super.update();
 		if (!completing) {
-			
-			if (FlxG.keys.pressed.R && FlxG.keys.pressed.S && FlxG.keys.pressed.T) {
-				saves.erase();
-			}
 			
 			if (FlxG.keys.justPressed.RIGHT || FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.UP) {
 				FlxG.sound.play("assets/sounds/bip.wav", 0.5);

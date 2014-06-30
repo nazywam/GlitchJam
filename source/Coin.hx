@@ -42,7 +42,7 @@ class Coin extends FlxSprite {
 	override public function update() {
 		super.update();
 		if (animation.name == "take" && animation.frameIndex == 11) {
-			trace(animation.name);
+			//trace(animation.name);
 
 			alpha = 0;
 		}
