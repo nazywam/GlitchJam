@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="Project.xml" />
     <movie fps="60" />
-    <movie width="640" />
-    <movie height="480" />
+    <movie width="700" />
+    <movie height="700" />
     <movie version="3" />
     <movie minorVersion="0" />
     <movie platform="NME" />
@@ -15,24 +15,27 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
+    <class path="D:\Development\\flixel\git" />
+    <class path="D:\Development\\lime\1,0,1" />
+    <class path="D:\Development\\openfl\2,0,1" />
+    <class path="D:\Development\\flixel-addons\git" />
+    <class path="D:\Development\\systools\1,1,0" />
     <class path="source" />
+    <class path="D:\Development\\openfl\2,0,1\backends\flash" />
     <class path="export\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="tools=1.4.0&#xA;FLX_NO_DEBUG&#xA;NAPE_RELEASE_BUILD&#xA;FLX_RENDER_BLIT&#xA;display&#xA;web" />
+    <option directives="flixel-addons=1.1.0&#xA;flixel=3.3.4&#xA;lime=1.0.1&#xA;systools=1.1.0&#xA;openfl=2.0.1&#xA;tools=1.5.7&#xA;FLX_NO_DEBUG&#xA;NAPE_RELEASE_BUILD&#xA;openfl-flash&#xA;FLX_RENDER_BLIT&#xA;display&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="--no-output&#xA;-swf-version 11.8&#xA;#--remap nme:flash" />
+    <option additional="-swf-lib NewgroundsAPI.swc&#xA;--no-output&#xA;-swf-version 11.8" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
-    <library name="flixel" />
-    <library name="openfl" />
-    <library name="flixel-addons" />
-    <library name="openfl" />
+    <!-- example: <library name="..." /> -->
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
@@ -40,7 +43,7 @@
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
-    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+    <asset path="NewgroundsAPI.swc" />
   </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

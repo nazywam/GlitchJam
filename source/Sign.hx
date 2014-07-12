@@ -2,7 +2,7 @@ package ;
 import flixel.FlxSprite;
 import openfl.Assets;
 import flixel.text.FlxText;
-import flixel.util.FlxPoint;
+import flixel.math.FlxPoint;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 /**

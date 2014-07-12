@@ -13,13 +13,16 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.tile.FlxTilemap;
 import flixel.FlxObject;
-import flixel.util.FlxMath;
-import flixel.util.FlxPoint;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
 import flixel.util.FlxTimer;
 import openfl.Assets;
 import flixel.FlxCamera;
 import flash.display.BitmapData;
-import flixel.addons.display.FlxZoomCamera;
+
+import com.newgrounds.*;
+import com.newgrounds.components.*;
+
 class PlayState extends FlxState
 {
 	
@@ -77,13 +80,12 @@ class PlayState extends FlxState
 			FlxG.switchState(new MenuState());
 		}
 		if (level == 14) {
-			background.loadMap(Assets.getText("assets/data/lvl14Background.txt"), "assets/images/lvl14Background.png", 128, 128, 0, 1);
+			background.loadMap(Assets.getText("assets/data/lvl14Background.txt"), "assets/images/lvl14Background.png", 128, 128, 1, 1);
 		} else if (level == 15) {
-			background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/glitches.png", 0, 0, 0, 1);
+			background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/glitches.png", 0, 0, 1, 1);
 		}else {
-			background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 0, 1);
+			background.loadMap(Assets.getText("assets/data/background.tmx"), "assets/images/background_bw.png", 128, 128, 1, 1);
 		}
-			
 		
 		add(background);
 		
@@ -123,9 +125,9 @@ class PlayState extends FlxState
 		if (level != 9 && level != 2) {
 			spawnPlayer();
 		}
-
-		FlxG.camera.setBounds(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
-		FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER);
+		FlxG.camera.setScrollBoundsRect(0, 0, FlxG.worldBounds.x, FlxG.worldBounds.y, true);
+		//FlxG.camera.setBounds
+		FlxG.camera.follow(player, FlxCameraFollowStyle.PLATFORMER);
 		
 		switch(level) {
 			case 0:
@@ -188,7 +190,8 @@ class PlayState extends FlxState
 				add(start);
 				
 				platform = new FlxSprite(1 * 16, 4 * 16);
-				platform.loadGraphic("assets/images/tiles.png", false, 48, 16);
+				platform.loadGraphic("assets/images/platform.png", false, 48, 16);
+				
 				platform.immovable = true;
 				add(platform);
 				
@@ -249,6 +252,8 @@ class PlayState extends FlxState
 	public function collectCoin(player : Player, coin : Coin) {
 		coin.animation.play("take");
 		coin.solid = false;
+		Reg.coinsCollected++;
+		trace(Reg.coinsCollected);
 		//coins.remove(coin);
 		
 		if (level == 2 && player.acceleration.y == 550 && coin.bugged) {
@@ -380,6 +385,9 @@ class PlayState extends FlxState
 		
 		if (player.velocity.y > 5000 && Reg.level == 15 && !ending.visible) {
 			FlxG.camera.shake();
+			var a = new FlxSprite(FlxG.camera.x,FlxG.camera.y);
+			a.makeGraphic(FlxG.camera.width, FlxG.camera.height, 0xFF0000AA);
+			add(a);
 			add(ending);
 			ending.visible = true;
 			ending.x = FlxG.camera.scroll.x;
@@ -462,6 +470,7 @@ class PlayState extends FlxState
 		
 		if (player.y > FlxG.worldBounds.height || player.x < 0 || player.x > FlxG.worldBounds.width) {
 			if (level == 13 && player.x > FlxG.worldBounds.width && signs.length < 5) {
+				API.unlockMedal("H@ckerz");
 				for (x in 0...35) {
 					var a = new Sign(32 + x * 16, 18 * 16, "H@ck3rz");
 					signs.add(a);
@@ -531,6 +540,11 @@ class PlayState extends FlxState
 			player.velocity.y  = 0;
 			player.animation.frameIndex = 2;
 		}
+		
+		if (FlxG.keys.justPressed.ESCAPE) {
+			Reg.level = -1;
+			FlxG.switchState(new MenuState());
+		}
 
 	}
 	function parseMap(map:String) {
@@ -577,7 +591,7 @@ class PlayState extends FlxState
 	}
 	function parseTiles(tiles:String) {
 		map = new FlxTilemap();
-		map.loadMap(tiles, "assets/images/tiles.png", 16, 16, 0, 1);
+		map.loadMap(tiles, "assets/images/tiles.png", 16, 16, 1, 1);
 		add(map);
 	}
 }

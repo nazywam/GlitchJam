@@ -12,6 +12,8 @@ class Level extends FlxSprite {
 	public var glitch : FlxGlitchSprite;
 	public var id : Int;
 	public var completed : Bool;
+	
+	public var collectedAllCoins : Bool = false;
 	public function new(X : Float, Y : Float, i : Int) {
 		super(X, Y);
 		id = i;
@@ -32,8 +34,6 @@ class Level extends FlxSprite {
 		
 	}
 	override public function update() {
-		//glitch.strength = 3;
-		
 		super.update();
 	}
 	
